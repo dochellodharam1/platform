@@ -1,5 +1,5 @@
-define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'TextToSpeech', 'FullScreenProvider'], 
-	function ($, QRCode, ChatBox, DeviceTypeChecker, SpeechToText, TextToSpeech, FullScreenProvider) {
+define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'TextToSpeech', 'FullScreenProvider', 'MapSearch'], 
+	function ($, QRCode, ChatBox, DeviceTypeChecker, SpeechToText, TextToSpeech, FullScreenProvider, MapSearch) {
 	
 	var body = $("body");
 	var chatBox = $("#chatbox");
@@ -32,7 +32,10 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 		"no thanks": "You are welcome",
 		"thanks": "You are welcome",
 		"no thank you": "You are welcome",
-		"thank you": "You are welcome"
+		"thank you": "You are welcome",
+		"find :what in *where": "Okay... Searching for {0} in {1}",
+		"find :what nearby": "Okay... Searching for {0} nearby your location",
+		"find :what nearme": "Okay... Searching for {0} at your location"
 	};
 
 	var queryToServer = function(query) {
@@ -138,12 +141,22 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 		}
 		return res;
 	};
+	var mapSearch = new MapSearch();
 	var getCommands = function() {
 		var cmds = [];
 		for(var rr in reqRes) {
 			var cmd = (function(req, res){
 				return {command: req,
-						callback: function(...params) {onServerResponse(formatResponse(res, params));}
+						callback: function(...params) {
+							// TODO:: add command search 
+							if(req.startsWith("find :what")) {
+								mapSearch.search({
+									where: params[1] ? params[1] : "nearby",
+									what:  params[0]
+								});
+							}
+							onServerResponse(formatResponse(res, params));
+						}
 				};
 			})(rr, reqRes[rr]);
 			
