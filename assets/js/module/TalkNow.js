@@ -33,9 +33,16 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 		"thanks": "You are welcome",
 		"no thank you": "You are welcome",
 		"thank you": "You are welcome",
+		
 		"find :what in *where": "Okay... Searching for {0} in {1}",
-		"find :what nearby": "Okay... Searching for {0} nearby your location",
-		"find :what nearme": "Okay... Searching for {0} at your location"
+		"suggest :what in *where": "Okay... Searching for {0} in {1}",
+		"search :what in *where": "Okay... Searching for {0} in {1}",
+		"display :what in *where": "Okay... Searching for {0} in {1}",
+		
+		"find :what (nearme)(near me)(nearby)(near by)": "Okay... Searching for {0} at your location",
+		"suggest :what (nearme)(near me)(nearby)(near by)": "Okay... Searching for {0} at your location",
+		"search :what (nearme)(near me)(nearby)(near by)": "Okay... Searching for {0} at your location",
+		"display :what (nearme)(near me)(nearby)(near by)": "Okay... Searching for {0} at your location"
 	};
 
 	var queryToServer = function(query) {
@@ -141,6 +148,14 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 		}
 		return res;
 	};
+	var startWithInArray = function(searchWhat, searchWhere) {
+		for(var i=0; i< searchWhat.length; i++) {
+			if(searchWhere.startsWith(searchWhat[i])) {
+				return true;
+			}
+		}
+		return false;
+	}; 
 	var mapSearch = new MapSearch();
 	var getCommands = function() {
 		var cmds = [];
@@ -149,7 +164,8 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 				return {command: req,
 						callback: function(...params) {
 							// TODO:: add command search 
-							if(req.startsWith("find :what")) {
+							var arr = ["find :what" , "search :what", "suggest :what", "display :what"];
+							if(startWithInArray(arr, req)) {
 								mapSearch.search({
 									where: params[1] ? params[1] : "nearby",
 									what:  params[0]
