@@ -126,6 +126,9 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 		talkNowRangeOuter.hide();
 		loggerFn(e, "ACTUAL END");
 	};
+	var onMapError = function(e) {
+		console.log('on error in map' + e);
+	};
 	var pageMemory = null;
 	var toggleTalkNowPage = function(bool) {
 		mainHomeSplash.toggle();
@@ -156,7 +159,12 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 		}
 		return false;
 	}; 
-	var mapSearch = new MapSearch();
+	var mapSearch = new MapSearch({
+		callbacks: {
+			onNoRecordFound: onMapError,
+			onError: onMapError,
+		}
+	});
 	var getCommands = function() {
 		var cmds = [];
 		for(var rr in reqRes) {
@@ -192,6 +200,8 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 			onCapture: onSpeechToTextResult
 		}
 	});
+	
+	
 	var onVoiceSelect = function(e) { 
 		var selectedIndex = $(this).find("a").attr("data-index");
 		console.log(selectedIndex);
@@ -231,4 +241,5 @@ define(['jquery', 'qrCode', 'ChatBox', 'DeviceTypeChecker', 'SpeechToText', 'Tex
 	}
 	
 	return {};
+	
 });
