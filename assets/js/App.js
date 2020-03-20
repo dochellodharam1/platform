@@ -9,7 +9,7 @@ requirejs.config({
 });
 requirejs([
 	'jquery', 
-	'ThemePage',
-	'TalkNow',
-	'MapSearch'
+	'Theme',
+	'HomePage',
+	'HelloDocPage'
 ]);

@@ -1,4 +1,4 @@
-define([], function() {
+define(['Utility'], function(Utility) {
 	var speechSynthesis = window.speechSynthesis;
 	
 	var instance = function(settings) {
@@ -59,6 +59,7 @@ define([], function() {
 			var highlightedText = beforeWord + "[[" + word + "]]" + afterWord;
 
 			onUtterance({
+				id: Utility.generateGuid(),
 				highlighted: {
 					html: highlightedHtml,
 					text: highlightedText

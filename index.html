@@ -181,9 +181,7 @@
                 <div class="overlay"></div>
                 <div class="container">
                     <div class="row">
-                        <div id="main_home_splash" class="main_home">
-								<div id="map"></div>
-								<div id="panel"></div>
+                        <div class="main_home">
                             <div class="home_text">
 								<div class="title-text-floated">
 									<h1 class="text-white ld_fancy_heading">
@@ -197,7 +195,19 @@
 								</div>
 							</div>
                         </div>
-						<div id="talk_now_page" class="main_home talk-now-page" style="display: none">
+                    </div><!--End off row-->
+                </div><!--End off container -->
+            </section> <!--End off Home Sections-->
+			
+			 <!--Talk Sections-->
+
+            <section id="talk" class="home bg-mega">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row">						
+								<div id="map" style="display:none"></div>
+								<div id="panel" style="display:none"></div>
+						<div id="talk_now_page" class="main_home talk-now-page">
 							<div id="voice_select" class="home_btns talk-now-cancel-btn">
 								<div class="btn-group">
 								  <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -235,7 +245,7 @@
 						</div>
                     </div><!--End off row-->
                 </div><!--End off container -->
-            </section> <!--End off Home Sections-->
+            </section> <!--End off Talk Sections-->
 
 
             <!--About Sections-->
@@ -1085,9 +1095,9 @@
             </div> --> 
 			<!-- End off scroll up -->
 
-			<div id="talk_now_btn" class="ab_head talk-now">
+			<div id="talk_now_btn" data-show-section="#talk" class="ab_head talk-now">
 				<div class="ab_head_icon">
-					<div class="inner-circle-loader">
+					<div class="inner-loader inner-circle-loader">
 					<i class="fa fa-microphone"></i>
 						<div class="talk-now talk-now-loader"></div>
 					</div>

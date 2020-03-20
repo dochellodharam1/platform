@@ -16,6 +16,5 @@ function(
 	$collapse,
 	bootsnav
 ) {
-	console.log('All vendors loaded');
 	return {};
 });
