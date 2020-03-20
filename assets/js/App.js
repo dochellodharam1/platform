@@ -4,7 +4,8 @@ requirejs.config({
 		jquery: '../vendor/jquery-1.11.2.min',
 		wayPoint: '../vendor/waypoints.min',
 		qrCode: '../vendor/easy.qrcode',
-		annyang: '../vendor/annyang.min'
+		annyang: '../vendor/annyang.min',
+		annyangUI: '../vendor/speechkitt.min'
     }
 });
 requirejs([

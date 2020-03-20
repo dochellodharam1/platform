@@ -204,19 +204,20 @@
             <section id="talk" class="home bg-mega">
                 <div class="overlay"></div>
                 <div class="container">
-                    <div class="row">						
-								<div id="map" style="display:none"></div>
-								<div id="panel" style="display:none"></div>
+                    <div class="row">
+						<div class="here-map">
+							<div id="map" ></div>
+							<div class="panel panel-side" >
+								<ul></ul>
+							</div>
+							<div class="panel panel-bottom">
+								<div class="arrow arrowL"></div>
+								<div class="content"><ul></ul></div>
+								<div class="arrow arrowR"></div>
+							</div>
+							<div id="clear" ></div>
+						</div>
 						<div id="talk_now_page" class="main_home talk-now-page">
-							<div id="voice_select" class="home_btns talk-now-cancel-btn">
-								<div class="btn-group">
-								  <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									Select a voice (Selected: <span class="selected"></span>) <span class="caret"></span>
-								  </button>
-								  <ul class="dropdown-menu"></ul>
-								</div>
-                            </div>
-							<div id="talk_now_response"></div>
 							<div class="circle-animator-box">
 							    <div class="inner-circle-box">
 									<div class="inner-circle-loader">
@@ -228,11 +229,7 @@
 								<div class="talk-now-range-outer outer-circle-loader" style="display:none; animation-delay: -1s"></div>
 								<div class="talk-now-range-outer outer-circle-loader" style="display:none; animation-delay: 0s"></div>
 							</div>
-							
-							<div class="home_btns talk-now-cancel-btn">
-                                <a id="talk_now_cancel_btn" class="btn btn-primary">CANCEL</a>
-                            </div>
-							<div id="chatbox" class="col-sm-3 chatbox" style="display:none">
+							<div id="chatbox" class="col-sm-3 chatbox" style="display: none">
 								<ul></ul>
 								<div>
 									<div class="msj-rta macro" style="margin:auto;position: absolute; bottom: 5px; width: 100%;">                        
@@ -1094,15 +1091,6 @@
                 <a href="#"><i class="fa fa-chevron-up"></i></a>
             </div> --> 
 			<!-- End off scroll up -->
-
-			<div id="talk_now_btn" data-show-section="#talk" class="ab_head talk-now">
-				<div class="ab_head_icon">
-					<div class="inner-loader inner-circle-loader">
-					<i class="fa fa-microphone"></i>
-						<div class="talk-now talk-now-loader"></div>
-					</div>
-				</div>
-			</div>
 
             <footer id="footer" class="footer bg-black">
                 <div class="container">

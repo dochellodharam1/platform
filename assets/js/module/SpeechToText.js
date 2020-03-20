@@ -1,4 +1,4 @@
-define(['annyang'], function(annyang) {
+define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 	var instance = function(settings) {
 		settings = settings || {callbacks : {} };
 		var dummyFn = function(param) {};
@@ -6,6 +6,7 @@ define(['annyang'], function(annyang) {
 		var defaults = {
 			continuous: true,
 			autoRestart: true,
+			instructionsText: 'What can I help you with?',
 			commands: [
 				// annyang will capture anything after a splat (*) and pass it to the function.
 				// e.g. saying "Show me Batman and Robin" is the same as calling showFlickr('Batman and Robin');
@@ -27,6 +28,10 @@ define(['annyang'], function(annyang) {
 				onError: dummyFn
 			}
 		};
+		
+		var continuous = settings.continuous || defaults.continuous;
+		var autoRestart = settings.autoRestart || defaults.autoRestart;
+		var instructionsText = settings.instructionsText || defaults.instructionsText;
 		
 		var commands = settings.commands || defaults.commands;		
 		
@@ -91,11 +96,44 @@ define(['annyang'], function(annyang) {
 				keywords: possibleSentence
 			});
 		});
+		// Tell KITT to use annyang
+		SpeechKITT.annyang();
+		SpeechKITT.setStartCommand(function() {
+			onListenStart();
+			annyang.start();
+		});
+		SpeechKITT.setAbortCommand(function () {
+			onListenEnd();
+			annyang.abort();
+		});
 		
+		SpeechKITT.setInstructionsText(instructionsText);
+
+		// Define a stylesheet for KITT to use
+		SpeechKITT.setStylesheet('assets/css/speechkitt.min.css');
+
+		// Render KITT's interface
+		SpeechKITT.vroom();
+		
+		var paused = false;
+		var pauseAndResume = function() {
+			if (paused) {
+				annyang.resume();
+			} else {
+				annyang.pause();
+			}
+			paused = !paused;
+		};
+		var start = function() {
+			annyang.start({
+				continuous: continuous,
+				autoRestart: autoRestart
+			});
+		};
 		return {
 			addCommands: addCommands,
-			start: annyang.start,
-			stop: annyang.stop,
+			start: start,
+			stop: pauseAndResume,
 			abort: annyang.abort			
 		};
 	};

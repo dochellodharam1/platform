@@ -45,7 +45,7 @@ define(['Utility'], function(Utility) {
 			}
 			return nonDefault;
 		};
-		
+		var lastUtterred = '';
 		var onUtteranceWrapFn = function(e) {
 			var txt = e.target.text;
 			var startedAt = e.charIndex;
@@ -57,9 +57,9 @@ define(['Utility'], function(Utility) {
 			
 			var highlightedHtml = beforeWord + "<span class='highlighted'>" + word + "</span>" + afterWord;
 			var highlightedText = beforeWord + "[[" + word + "]]" + afterWord;
-
+			
 			onUtterance({
-				id: Utility.generateGuid(),
+				id: Utility.hashCode(txt),
 				highlighted: {
 					html: highlightedHtml,
 					text: highlightedText
@@ -69,7 +69,24 @@ define(['Utility'], function(Utility) {
 				charIndex: startedAt,
 				charLength: charLength
 			});
+			lastUtterred = txt;
 		};
+		
+		var onEndWrapFn = function(e) {
+			onUtterance({
+				id: Utility.hashCode(lastUtterred),
+				highlighted: {
+					html: lastUtterred,
+					text: lastUtterred
+				},
+				text: lastUtterred,
+				word: '',
+				charIndex: lastUtterred.length - 1,
+				charLength: 0
+			});
+			onEnd(e);
+		};
+		
 		var currentVoice = getDefaultVoice();
 		var getUtterance = function(txt) {
 			var utterance = new SpeechSynthesisUtterance(txt);
@@ -78,7 +95,7 @@ define(['Utility'], function(Utility) {
 			utterance.rate = rate;
 			utterance.addEventListener('start', onStart);
 			utterance.addEventListener('boundary', onUtteranceWrapFn);
-			utterance.addEventListener('end', onEnd);
+			utterance.addEventListener('end', onEndWrapFn);
 			return utterance;
 		};
 		

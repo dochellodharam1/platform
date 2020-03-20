@@ -52,7 +52,7 @@ define(['jquery'], function($) {
 			var control = null;
 			if(id) {
 				var control = $('#' + id);
-				if(!control.length) {
+				if(control.length) {
 					control.find("p.text").html(text);
 				} else {
 					control = prepareChatMsg(id, who, text);

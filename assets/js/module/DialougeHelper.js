@@ -4,37 +4,37 @@ define(['jquery'], function ($) {
 		{
 			"intent": "hello doctor",
 			"reply": "Hello! What is your name?",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
 			"intent": "my name is *name",
 			"reply": "Okay {0}, How you feeling today?",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
 			"intent": "(pleople)(you can) call me *name",
 			"reply": "Okay {0}, How you feeling today?",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
 			"intent": "hello doctor *verb",
 			"reply": "Hi Neetesh!, How you feeling today?",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
 			"intent": "i am (not feeling well)(not feeling good)(not well)(little)(sick)(today)",
 			"reply": "Should I suggest some medicine or doctors nearby?",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
 			"intent": "i am feeling *anything",
 			"reply": "do you want to search anything?",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
@@ -46,25 +46,25 @@ define(['jquery'], function ($) {
 		{
 			"intent": "no thanks",
 			"reply": "You are welcome",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
 			"intent": "thanks",
 			"reply": "You are welcome",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
 			"intent": "no thank you",
 			"reply": "You are welcome",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{
 			"intent": "thank you",
 			"reply": "You are welcome",
-			"action": "MAP_SEARCH",
+			"action": "JUST_REPLY",
 			"type": "NON_CONTEXTUAL"
 		},
 		{

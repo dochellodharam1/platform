@@ -155,3 +155,142 @@ nav.navbar.bootsnav.navbar-transparent.white ul.nav > li > a,
 nav.navbar.bootsnav.navbar-header-custom.white ul.nav > li > a {
 	color: #FFFFFF;
 }
+
+@media (min-width: 1024px) and (max-width:1400px) {
+    #talk {
+		padding-top: 120px;
+	}
+	.here-map {
+		height: 300px;
+	}
+}
+
+@media (min-width: 1024px) {
+	#talk {
+		padding-top: 95px;
+	}
+	.here-map {
+		height: 300px;
+	}
+}
+
+@media (max-width: 992px) {
+	#talk {
+		padding-top: 70px;
+	}
+	.here-map {
+		height: 300px;
+	}
+}
+
+@media (max-width: 767px) {
+	#talk {
+		padding-top: 75px;
+	}
+	.here-map {
+		width: 90%;
+		height: 370px;
+	}
+	.here-map #map{
+		float: left;
+		width: 100%;
+		height: 65%;
+	}
+	.here-map .panel-side {
+		height: 0%;
+		display: none;
+	}
+	.here-map .panel-bottom {
+		height: 35%;
+		display: block;
+	}
+}
+
+@media (min-width: 480px) and (max-width: 640px) {
+	#talk {
+		padding-top: 75px;
+	}
+	.here-map {
+		width: 90%;
+		height: 370px;
+	}
+	.here-map #map{
+		float: left;
+		width: 100%;
+		height: 65%;
+	}
+	.here-map .panel-side {
+		height:0%;
+		display: none;
+	}
+	.here-map .panel-bottom {
+		height: 35%;
+		display: block;
+	}
+}
+.here-map .panel ul li.place {
+    height: 95px;
+    border: 1px solid black;
+    border-radius: 3px;
+	cursor: pointer;
+	margin-bottom: 3px;
+}
+.here-map .panel ul li.place:hover {
+  background: #32465a;
+}
+.here-map .panel ul li.place.active {
+  background: #32465a;
+  border-right: 5px solid #435f7a;
+}
+.here-map .panel ul li.place .wrap {
+  width: 88%;
+  margin: 0 auto;
+  position: relative;
+}
+.here-map .panel ul li.place .wrap .meta .name {
+	font-weight: 800;
+	font-size: 18px;
+	margin-bottom: 2px;
+}
+.here-map .panel ul li.place .wrap .meta .cat {
+	margin-bottom: 2px;
+}
+.here-map .panel ul li.place .wrap .meta .vicinity {
+	white-space: nowrap; 
+	width: 100%; 
+	overflow: hidden;
+	text-overflow: ellipsis; 
+	margin-bottom: 2px;
+}
+.here-map .panel-bottom ul {
+	white-space: nowrap;
+}
+.here-map .panel-bottom ul li.place {
+    margin-right: 3px;
+    width: 300px;
+	display: inline-flex;
+	height: 100%;
+}
+.here-map .panel-bottom ul li.place .wrap {
+  width: 100%;
+  height: 110px;
+  margin: 0 auto;
+  position: relative;
+}
+.here-map .panel-bottom .arrow {
+	width: 20px;
+	height: 100%;
+	background-color: #ffff00;
+}
+.here-map .panel-bottom .arrowL {
+	float: left;
+	margin-right: 5px;
+}
+.here-map .panel-bottom .arrowR {
+	float: right;
+	margin-left: 5px;
+}
+.here-map .panel-bottom .content {
+	float: left;
+	width: 98%;
+}

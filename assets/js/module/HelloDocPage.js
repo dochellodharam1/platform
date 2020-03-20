@@ -1,11 +1,11 @@
-define(['jquery', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextToSpeech', 'ChatBox', 'MapSearch'], 
-	function ($, DeviceTypeChecker, DialougeHelper, SpeechToText, TextToSpeech, ChatBox, MapSearch) {
+define(['jquery', 'ConfigProvider', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextToSpeech', 'ChatBox', 'MapSearch'], 
+	function ($, ConfigProvider, DeviceTypeChecker, DialougeHelper, SpeechToText, TextToSpeech, ChatBox, MapSearch) {
 
 	// Page elements
 	var talkNowRangeOuter = $(".talk-now-range-outer");
-	var talkNowBtn = $("#talk_now_btn");
 	
 	// Utilities
+	var config = new ConfigProvider();
 	var deviceTypeChecker = new DeviceTypeChecker();
 	var dialougeHelper = null;
 	var chatBox = null;
@@ -16,8 +16,7 @@ define(['jquery', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextTo
 	// Callbacks
 	var dummyFn = function(param) {  };
 	var onSpeechToTextResult = function(param) {
-		//console.log(param);
-		//chatBox.insertChat({who: "me", text: param.userSaid});
+		chatBox.insertChat({who: "me", text: param.userSaid});
 	};
 	
 	var onMapSearchComplete = function(param) {
@@ -31,9 +30,14 @@ define(['jquery', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextTo
 	};
 	
 	mapSearch = new MapSearch({
-		callbacks : {
-			onMapSearchComplete : onMapSearchComplete,
-			onMapError : onMapError
+		mapContainer: '#map',
+		searchedContentContainer: '.here-map .panel ul',
+		credentials: {
+			apiKey: config.MAP.credentials.apiKey
+		},
+		callbacks: {
+			onSearchComplete: onMapSearchComplete,
+			onError: onMapError
 		}
 	});
 	
@@ -81,14 +85,19 @@ define(['jquery', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextTo
 			onChatSend: onChatSend
 		}
 	});
-	
+	var memory = {}; 
+	var toggleTalkPage =  function(bool) {
+		talkNowRangeOuter.toggle(bool);
+		showOnlySelectedSection("#talk");
+	};
 	speechToText = new SpeechToText({
-		continuous: true,
-		autoRestart: true,
+		continuous: config.SPEECH_TO_TEXT.continuous,
+		autoRestart: config.SPEECH_TO_TEXT.autoRestart,
+		instructionsText: config.SPEECH_TO_TEXT.instructionsText,
 		commands: dialougeHelper.getCommands(),
 		callbacks: {
-			onListenStart: talkNowRangeOuter.show,
-			onListenEnd: talkNowRangeOuter.hide,
+			onListenStart: function() {toggleTalkPage(true);},
+			onListenEnd: function() {toggleTalkPage(false);},
 			
 			onError: dummyFn,	
 			onCapture: onSpeechToTextResult
@@ -96,8 +105,8 @@ define(['jquery', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextTo
 	});
 	
 	textToSpeech = new TextToSpeech({
-		pitch: 1,
-		rate: 0.9,
+		pitch: config.TEXT_TO_SPEECH.pitch,
+		rate: config.TEXT_TO_SPEECH.rate,
 		callbacks: {
 			onStart: dummyFn,
 			onEnd: dummyFn,
@@ -109,18 +118,6 @@ define(['jquery', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextTo
 	});
 	
 	chatBox.clearChat();
-	talkNowBtn.click(function(e) {
-		var _self = $(this);
-		var sectionAttr = 'data-show-section';
-		var sectionToDisplay = _self.attr(sectionAttr);
-		var previous = showOnlySelectedSection(sectionToDisplay).previous; 
-		_self.attr(sectionAttr, previous);
-		speechToText.start(); 
-		talkNowBtn.find('div.inner-loader').toggleClass('inner-circle-loader');
-		var icon = talkNowBtn.find('i');
-		icon.toggleClass('fa-microphone');
-		icon.toggleClass('fa-times');
-	});
 
 	return {};
 	
