@@ -86,30 +86,21 @@
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" >
                                     <i class="fa fa-bell"></i>
-                                    <span class="badge">3</span>
+                                    <span class="badge noti-counter">0</span>
                                 </a>
-                                <ul class="dropdown-menu cart-list">
-                                    <li>
-                                        <a href="#" class="photo"><img src="https://www.coindesk.com/wp-content/uploads/2019/05/Elvira-Nabiullina-BoR-1200x628.jpg" class="cart-thumb" alt="" /></a>
-                                        <h6><a href="#">Bank of Russia Says New Digital Assets Bill Will Outlaw Crypto Trading, Issuance </a></h6>
-                                        <p class="m-top-10">2x - <span class="price">2020-03-16T14:00:26Z</span></p>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="photo"><img src="assets/images/thumb01.jpg" class="cart-thumb" alt="" /></a>
-                                        <h6><a href="#">Delica omtantur </a></h6>
-                                        <p class="m-top-10">2x - <span class="price">$99.99</span></p>
-                                    </li>
-                                    <li>
-                                        <a href="#" class="photo"><img src="assets/images/thumb01.jpg" class="cart-thumb" alt="" /></a>
-                                        <h6><a href="#">Delica omtantur </a></h6>
-                                        <p class="m-top-10">2x - <span class="price">$99.99</span></p>
-                                    </li>
-                                    <!---- More List ---->
-                                    <li class="total">
-                                        <span class="pull-right"><strong>Total</strong>: $0.00</span>
-                                        <a href="#" class="btn btn-cart">Cart</a>
-                                    </li>
-                                </ul>
+								<ul class="dropdown-menu" style="width: 258px;">
+									<li style="padding: 5px !important;">
+										<div class="total noti-control">
+											<a href="#" class="btn btn-cart noti-remove-btn" style="display: block">Clear All</a>
+											<hr style="margin: 2px"/>
+										</div>
+										<ul id="notifications-dropdown" class="cart-list"></ul>
+										<div>
+											<hr style="margin: 2px"/>
+											<span style="display: block; padding-top: 0px"><strong>Powered By: </strong><a class="noti-powered-by" target="_new" href="#"></a></span>
+										</div>
+									</li>
+								</ul>
                             </li>
                             <li class="search"><a href="#"><i class="fa fa-search"></i></a></li>
                             <li class="side-menu"><a href="#"><i class="fa fa-bars"></i></a></li>
@@ -217,6 +208,7 @@
 							</div>
 							<div id="clear" ></div>
 						</div>
+						<div id="doctor-avatar"></div>
 						<div id="talk_now_page" class="main_home talk-now-page">
 							<div class="circle-animator-box">
 							    <div class="inner-circle-box">

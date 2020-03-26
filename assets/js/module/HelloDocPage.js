@@ -1,5 +1,5 @@
-define(['jquery', 'ConfigProvider', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextToSpeech', 'ChatBox', 'MapSearch'], 
-	function ($, ConfigProvider, DeviceTypeChecker, DialougeHelper, SpeechToText, TextToSpeech, ChatBox, MapSearch) {
+define(['jquery', 'ConfigProvider', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextToBotSpeech', 'ChatBox', 'MapSearch'], 
+	function ($, ConfigProvider, DeviceTypeChecker, DialougeHelper, SpeechToText, TextToBotSpeech, ChatBox, MapSearch) {
 
 	// Page elements
 	var talkNowRangeOuter = $(".talk-now-range-outer");
@@ -104,7 +104,9 @@ define(['jquery', 'ConfigProvider', 'DeviceTypeChecker', 'DialougeHelper', 'Spee
 		}
 	});
 	
-	textToSpeech = new TextToSpeech({
+	textToSpeech = new TextToBotSpeech({
+		container: '#doctor-avatar',
+		applicationId: config.TEXT_TO_SPEECH.credentials.applicationId,
 		pitch: config.TEXT_TO_SPEECH.pitch,
 		rate: config.TEXT_TO_SPEECH.rate,
 		callbacks: {

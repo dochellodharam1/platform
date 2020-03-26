@@ -5,7 +5,9 @@ requirejs.config({
 		wayPoint: '../vendor/waypoints.min',
 		qrCode: '../vendor/easy.qrcode',
 		annyang: '../vendor/annyang.min',
-		annyangUI: '../vendor/speechkitt.min'
+		annyangUI: '../vendor/speechkitt.min',
+		botlibreSdk: '../vendor/botlibre_sdk',
+		timeAgo: '../vendor/timeago.full.min'
     }
 });
 requirejs([

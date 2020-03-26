@@ -294,3 +294,16 @@ nav.navbar.bootsnav.navbar-header-custom.white ul.nav > li > a {
 	float: left;
 	width: 98%;
 }
+#sdkplaybutton, #sdkvideoplaybutton2 {
+	display: none !important;
+}
+.avatar-avatarbox:hover {
+	border-color: transparent !important;
+}
+#notifications-dropdown {
+	overflow: auto;
+    max-height: 300px;
+}
+.news-article:hover {
+	background-color: #f2f2f2;
+}

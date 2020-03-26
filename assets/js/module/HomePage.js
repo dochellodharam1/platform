@@ -1,6 +1,9 @@
-define(['jquery', 'qrCode', 'DeviceTypeChecker'], 
-	function ($, QRCode, DeviceTypeChecker) {
-
+define(['jquery', 'ConfigProvider', 'qrCode', 'DeviceTypeChecker', 'NotificationProvider'], 
+	function ($, ConfigProvider, QRCode, DeviceTypeChecker, NotificationProvider) {
+	var dummyFn = function(param) {};
+	
+	var config = new ConfigProvider();
+	
 	var deviceTypeChecker = new DeviceTypeChecker();
 
 	if(deviceTypeChecker.isMobile() || deviceTypeChecker.isTablet()) {
@@ -25,6 +28,15 @@ define(['jquery', 'qrCode', 'DeviceTypeChecker'],
 			correctLevel: QRCode.CorrectLevel.H // L, M, Q, H
 		});
 	}
+	
+	var notificationProvider = new NotificationProvider({
+		apiKey: config.NEWS_API.credentials.apiKey,
+		container: "#notifications-dropdown",
+		sources: config.NEWS_API.sources,
+		callbacks: {
+			onNotificationClick: dummyFn
+		}
+	});
 	
 	return {};
 	

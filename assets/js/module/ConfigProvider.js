@@ -14,7 +14,16 @@ define(['jquery'], function($) {
 			},
 			TEXT_TO_SPEECH: {
 				pitch: 1,
-				rate: 0.9
+				rate: 0.9,
+				credentials: {
+					applicationId: '6291889508634688769'
+				}
+			},
+			NEWS_API: {
+				sources: ['bbc-news'],
+				credentials: {
+					apiKey: '9360456286c2406eb3bb1cdda170d743'
+				}
 			}
 		};
 	};
