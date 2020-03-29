@@ -1,4 +1,4 @@
-define(['jquery', 'TemplateProvider'], function($, TemplateProvider) {
+define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 	var moduleTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div class="here-map" style="display: ${display}">
 			<div id="map" ></div>

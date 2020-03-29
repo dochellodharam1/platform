@@ -1,4 +1,4 @@
-define(['jquery', 'Utility', 'TemplateProvider'], function($, Utility, TemplateProvider) {
+define(['jquery', 'lib/Utility', 'lib/TemplateProvider'], function($, Utility, TemplateProvider) {
 	var moduleTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div class="utterance-display-box">
 			<p></p>

@@ -1,4 +1,4 @@
-define(['jquery', 'ConfigProvider'], function($, ConfigProvider) {
+define(['jquery', 'lib/ConfigProvider'], function($, ConfigProvider) {
 	var config = new ConfigProvider();
 	var trackFn = function(userId, metadata) {
 		var data = encodeURI(metadata);

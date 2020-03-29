@@ -1,4 +1,4 @@
-define(['jquery', 'Utility', 'TemplateProvider', 'timeAgo'], function($, Utility, TemplateProvider, timeAgo) {
+define(['jquery', 'lib/Utility', 'lib/TemplateProvider'], function($, Utility, TemplateProvider) {
 	var articleTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<li class="news-article" style="padding: 5px !important;">
 			<a target="_new" href="${url}" class="photo"> 
@@ -38,7 +38,7 @@ define(['jquery', 'Utility', 'TemplateProvider', 'timeAgo'], function($, Utility
 				for(var i in data.articles) {
 					var article = data.articles[i];
 					var date = new Date(Date.parse(article.publishedAt.replace('T', ' ').replace('Z', ' ')))
-					article.timeAgo = timeAgo.format(date);
+					article.timeAgo = Utility.formatByTimeAgo(date);
 					if(!article.urlToImage) {
 						article.urlToImage = 'https://via.placeholder.com/50x50.png?text=' + Utility.extractInitials(article.source.name);
 					}

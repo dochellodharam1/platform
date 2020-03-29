@@ -1,4 +1,4 @@
-define(['jquery'], function($) {
+define(['jquery', 'timeAgo'], function($, timeAgo) {
 
 	var generateGuid = function() {
 		var result, i, j;
@@ -47,6 +47,7 @@ define(['jquery'], function($) {
 		generateGuid: generateGuid,
 		hashCode: hashCode,
 		extractInitials: extractInitials,
-		extractValueAndUnit: extractValueAndUnit
+		extractValueAndUnit: extractValueAndUnit,
+		formatByTimeAgo: timeAgo.format
 	};
 });

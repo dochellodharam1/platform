@@ -1,4 +1,4 @@
-define(['jquery', 'Utility', 'TemplateProvider'], function($, Utility, TemplateProvider) {
+define(['jquery', 'lib/Utility', 'lib/TemplateProvider'], function($, Utility, TemplateProvider) {
 	var chatBoxTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div id="chatbox" class="col-sm-3 chatbox" style="display: ${display}">
 			<ul></ul>

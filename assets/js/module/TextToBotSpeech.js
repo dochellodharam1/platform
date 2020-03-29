@@ -1,4 +1,4 @@
-define(['jquery', 'Utility', 'botlibreSdk'], function($, Utility, botlibreSdk) {
+define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utility) {
 	
 	var instance = function(settings) {
 		settings = settings || {callbacks : {} };

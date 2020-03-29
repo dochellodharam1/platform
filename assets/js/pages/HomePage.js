@@ -1,5 +1,5 @@
-define(['jquery', 'ConfigProvider', 'qrCode', 'DeviceTypeChecker', 'TemplateProvider', 'NotificationProvider'], 
-	function ($, ConfigProvider, QRCode, DeviceTypeChecker, TemplateProvider, NotificationProvider) {
+define(['jquery', 'qrCode', 'lib/ConfigProvider', 'lib/DeviceTypeChecker', 'lib/TemplateProvider', 'module/NotificationProvider'], 
+	function ($, QRCode, ConfigProvider, DeviceTypeChecker, TemplateProvider, NotificationProvider) {
 	var pageTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div class="main_home">
 			<div class="home_text">

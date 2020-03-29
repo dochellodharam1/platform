@@ -1,4 +1,4 @@
-define(['jquery', 'ConfigProvider', 'TemplateProvider', 'DialougeHelper', 'SpeechToText', 'TextToBotSpeech', 'ChatBox', 'MapSearch', 'ToggleableLoader'], 
+define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHelper', 'module/SpeechToText', 'module/TextToBotSpeech', 'module/ChatBox', 'module/MapSearch', 'module/ToggleableLoader'], 
 	function ($, ConfigProvider, TemplateProvider, DialougeHelper, SpeechToText, TextToBotSpeech, ChatBox, MapSearch, ToggleableLoader) {
 	var pageTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div class="map-view"></div>
