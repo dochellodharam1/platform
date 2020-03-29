@@ -1,6 +1,7 @@
 requirejs.config({
     baseUrl: './assets/js/module',
     paths: {
+		pages: '../pages',
 		jquery: '../vendor/jquery-1.11.2.min',
 		wayPoint: '../vendor/waypoints.min',
 		qrCode: '../vendor/easy.qrcode',
@@ -13,6 +14,7 @@ requirejs.config({
 requirejs([
 	'jquery', 
 	'Theme',
-	'HomePage',
-	'HelloDocPage'
+	'EventTracker',
+	'pages/HomePage',
+	'pages/HelloDocPage'
 ]);

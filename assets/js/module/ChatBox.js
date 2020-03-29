@@ -1,4 +1,28 @@
-define(['jquery'], function($) {
+define(['jquery', 'Utility', 'TemplateProvider'], function($, Utility, TemplateProvider) {
+	var chatBoxTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
+		<div id="chatbox" class="col-sm-3 chatbox" style="display: ${display}">
+			<ul></ul>
+			<div>
+				<div class="msj-rta macro" style="margin:auto;position: absolute; bottom: 5px; width: 100%;">                        
+					<div class="text text-r" style="background:whitesmoke !important">
+						<input class="mytext" placeholder="Type a message"/>
+					</div> 
+				</div>
+			</div>
+		</div> 
+	_TEMPLATE_*/});
+	
+	var chatTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
+		<li id=${id} style="width:100%;">
+			<div class="{macroStyleClass}">
+				<div class="${alignStyleClass}">
+					<p class="text">${text}</p>
+					<p class="time"><small>${date}</small></p>
+				</div>
+			<div class="avatar" style="padding:0px 0px 0px 10px !important"></div>                              
+		</li>
+	_TEMPLATE_*/});
+	
 	var formatAMPM = function(date) {
 		var hours = date.getHours();
 		var minutes = date.getMinutes();
@@ -10,37 +34,22 @@ define(['jquery'], function($) {
 		return strTime;
 	};
 	
-	var prepareChatMsg = function(id, who, text) {
-		var amI = (who == "me");
-		var macroStyleClass = amI ? "msj macro" : "msj-rta macro" ;
-		var alignStyleClass = amI ? "text text-l" : "text text-r" ;
-		var date = formatAMPM(new Date());
-		var idF = id ? ' id="' + id + '"' : ' '; 
-		var avatar = amI ? '' : '<div class="avatar" style="padding:0px 0px 0px 10px !important"></div>';
-		var control = '<li' + idF + ' style="width:100%;">' +
-							'<div class="' + macroStyleClass + '">' +
-								'<div class="' + alignStyleClass + '">' +
-									'<p class="text">' + text + '</p>' +
-									'<p class="time"><small>' + date + '</small></p>' +
-								'</div>' +
-							avatar +                                
-					  '</li>';
-		return control;
-	};
-	
 	var instance = function(settings) {
 	settings = settings || {callbacks : {} };
 		var dummyFn = function(param) {};
 		var defaults = {
-			chatContainer: "#chatbox",
-			inputBox: ".mytext",
+			container: '',
+			display: 'block',
 			callbacks: {
 				onChatSend: dummyFn
 			}
 		};
-		var chatContainer = settings.chatContainer || defaults.chatContainer;
+		var container = settings.container || defaults.container;
 		var inputBox = settings.inputBox || defaults.inputBox;
-		var msgContainer = chatContainer + " ul"; 
+		var display = settings.display || defaults.display;
+		var msgContainer = "#chatbox ul"; 
+		
+		$(container).append(TemplateProvider.parse(chatBoxTemplate, {'display': display}));
 		
 		var onChatSend = settings.callbacks.onChatSend || defaults.callbacks.onChatSend;
 		
@@ -50,16 +59,27 @@ define(['jquery'], function($) {
 			var text = param.text;
 			var delay = param.delay || 0;
 			var control = null;
+			var amI = (who == "me");
+			var macroStyleClass = amI ? "msj macro" : "msj-rta macro" ;
+			var alignStyleClass = amI ? "text text-l" : "text text-r" ;
+			var date = formatAMPM(new Date());
+			var data = {
+				'id': id,
+				'macroStyleClass': macroStyleClass,
+				'alignStyleClass': alignStyleClass,
+				'text': text,
+				'date': date
+			};
 			if(id) {
 				var control = $('#' + id);
 				if(control.length) {
 					control.find("p.text").html(text);
 				} else {
-					control = prepareChatMsg(id, who, text);
+					control = TemplateProvider.parse(chatTemplate, data);
 					setTimeout(function(){ $(msgContainer).append(control); }, delay);
 				}
 			} else {
-				control = prepareChatMsg(id, who, text);
+				control = TemplateProvider.parse(chatTemplate, data);
 				setTimeout(function(){ $(msgContainer).append(control); }, delay);
 			}
 		};
@@ -68,7 +88,7 @@ define(['jquery'], function($) {
 			$(msgContainer).empty();
 		}
 	
-		$(inputBox).on("keyup", function(e) {
+		$('#chatbox input.mytext').on("keyup", function(e) {
 			if (e.which == 13) {
 				var text = $(this).val();
 				if (text !== "") {
@@ -80,9 +100,21 @@ define(['jquery'], function($) {
 			}
 		});
 		
+		var toggle = function(c, bool) {
+			var div = $(container + ' #chatbox');
+			if(bool == 'undefined') {
+				return div.toggle();
+			}
+			return div.toggle(bool);
+		};
+		
 		return {
 			insertChat: insertChatFn,
-			clearChat: clearChatFn
+			clearChat: clearChatFn,
+			
+			show: function() { toggle(true);},
+			hide: function() { toggle(false);},
+			toggle: toggle
 		};
 	};
 	

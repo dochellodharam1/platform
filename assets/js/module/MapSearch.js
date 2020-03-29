@@ -1,11 +1,46 @@
-define(['jquery'], function($) {
+define(['jquery', 'TemplateProvider'], function($, TemplateProvider) {
+	var moduleTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
+		<div class="here-map" style="display: ${display}">
+			<div id="map" ></div>
+			<div class="panel panel-side" >
+				<ul></ul>
+			</div>
+			<div class="panel panel-bottom">
+				<div class="arrow arrowL"></div>
+				<div class="content"><ul></ul></div>
+				<div class="arrow arrowR"></div>
+			</div>
+			<div id="clear" ></div>
+		</div>
+	_TEMPLATE_*/});
+	
+	var placeItemTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
+		<li class="place" data-pos-lat="${lat}" data-pos-lng="${lng}">
+			<div class="wrap">
+				<div class="meta">
+					<p class="name">${place.title}</p>
+					<p class="cat">${place.category.title}</p>
+					<p class="vicinity">${place.vicinity}(${place.distance})</p>
+				</div>
+			</div>
+		</li>
+	_TEMPLATE_*/});
+	
+	var markerContentTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
+		<div style="font-size: 10px" >
+			<h3>${title}</h3>
+			<h4>${category.title}</h4>
+			${vicinity}
+		</div>
+	_TEMPLATE_*/});
+	
 	var instance = function(settings) {
 		settings = settings || {callbacks : {} };
 		var dummyFn = function(param) {};
 		
 		var defaults = {
-			mapContainer: '#map',
-			searchedContentContainer: '.here-map .panel ul',
+			container: '',
+			display: 'block',
 			credentials: {
 				apiKey: 'FsjN5-JHlUTgC6Tb6M5bP8PH3hTLFR_dchOLAexbKA4'
 			},
@@ -15,12 +50,15 @@ define(['jquery'], function($) {
 			}
 		};
 
-		var mapContainer = settings.mapContainer || defaults.mapContainer;
-		var searchedContentContainer = settings.searchedContentContainer || defaults.searchedContentContainer;
+		var container = settings.container || defaults.container;
+		var display = settings.display || defaults.display;
 		var apiKey = settings.credentials.apiKey || defaults.credentials.apiKey;
 		
 		var onSearchComplete = settings.callbacks.onSearchComplete || defaults.callbacks.onSearchComplete;
 		var onError = settings.callbacks.onError || defaults.callbacks.onError;
+		
+		var searchedContentContainer = '.here-map .panel ul';
+		$(container).append(TemplateProvider.parse(moduleTemplate, {'display': display}));
 		
 		// Here API
 		var platform = new H.service.Platform({ apikey: apiKey });
@@ -28,7 +66,7 @@ define(['jquery'], function($) {
 		var defaultLayers = platform.createDefaultLayers();
 		
 		var map = new H.Map(
-			$(mapContainer)[0],
+			$('#map')[0],
 			defaultLayers.vector.normal.map,
 			{ center: { lat: 50, lng: 5 },
 				zoom: 4,
@@ -68,8 +106,7 @@ define(['jquery'], function($) {
 		var addPlacesToMap = function (places) {
 			group.addObjects(places.map(function (place) {
 				var marker = new H.map.Marker({lat: place.position[0], lng: place.position[1]});
-				marker.content = '<div style="font-size: 10px" ><h3>' + place.title +
-				'</h3><h4>' + place.category.title + '</h4>' + place.vicinity + '</div>';
+				marker.content = TemplateProvider.parse(markerContentTemplate, place);
 				return marker;
 			}));
 
@@ -106,15 +143,11 @@ define(['jquery'], function($) {
 				var place = places[i];
 				var lat = place.position[0];
 				var lng = place.position[1];
-				var item = '<li class="place" data-pos-lat="' + lat + '" data-pos-lng="' + lng + '">' +
-								'<div class="wrap">' +
-									'<div class="meta">' +
-										'<p class="name">' + place.title + '</p>' +
-										'<p class="cat">' + place.category.title + '</p>' +
-										'<p class="vicinity">' + place.vicinity + '('+ place.distance +')' + '</p>' +
-									'</div>' +
-								'</div>' +
-							'</li>';
+				var item = TemplateProvider.parse(placeItemTemplate, {
+					'lat': lat, 
+					'lng': lng,
+					'place': place
+				});
 				$(searchedContentContainer).append(item);
 			}
 		};
@@ -149,10 +182,6 @@ define(['jquery'], function($) {
 			}
 		};
 		
-		var toggleDisplay = function(bool) {
-			
-		};
-		
 		$(document).on("click",'.here-map .panel-bottom .arrowR', function(){
 			$('.here-map .panel-bottom ul').animate({'left':'-=300px'});
 		});
@@ -167,9 +196,19 @@ define(['jquery'], function($) {
 			moveMapToCoordinates({lat: lat, lng: lng});
 		});
 		
+		var toggle = function(bool) {
+			var div = $(container + ' .here-map');
+			if(bool == 'undefined') {
+				return div.toggle();
+			}
+			return div.toggle(bool);
+		};
+		
 		return {
 			search: searchWrap,
-			toggleDisplay: toggleDisplay 
+			show: function() { toggle(true);},
+			hide: function() { toggle(false);},
+			toggle: toggle
 		};
 	};
 	return instance;

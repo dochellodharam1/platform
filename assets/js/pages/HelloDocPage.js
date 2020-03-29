@@ -1,17 +1,27 @@
-define(['jquery', 'ConfigProvider', 'DeviceTypeChecker', 'DialougeHelper', 'SpeechToText', 'TextToBotSpeech', 'ChatBox', 'MapSearch'], 
-	function ($, ConfigProvider, DeviceTypeChecker, DialougeHelper, SpeechToText, TextToBotSpeech, ChatBox, MapSearch) {
-
-	// Page elements
-	var talkNowRangeOuter = $(".talk-now-range-outer");
+define(['jquery', 'ConfigProvider', 'TemplateProvider', 'DialougeHelper', 'SpeechToText', 'TextToBotSpeech', 'ChatBox', 'MapSearch', 'ToggleableLoader'], 
+	function ($, ConfigProvider, TemplateProvider, DialougeHelper, SpeechToText, TextToBotSpeech, ChatBox, MapSearch, ToggleableLoader) {
+	var pageTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
+		<div class="map-view"></div>
+		<!-- <div class="loader-view" style="height: 350px; width: 350px; margin: 0 auto;"></div> -->
+		<div class="doctor-avatar" style="width: 350px; margin: 0 auto;"></div>
+		<div class="chat-box"></div>
+	_TEMPLATE_*/});
 	
+	$("#talk .row").append(pageTemplate);
+
 	// Utilities
 	var config = new ConfigProvider();
-	var deviceTypeChecker = new DeviceTypeChecker();
 	var dialougeHelper = null;
 	var chatBox = null;
 	var speechToText = null;
 	var textToSpeech = null;
 	var mapSearch = null;
+	var toggleableLoader = new ToggleableLoader({
+		container: '.loader-view',
+		display: 'block',
+		displayInner: 'block',
+		displayOuter: 'none'
+	});
 	
 	// Callbacks
 	var dummyFn = function(param) {  };
@@ -30,8 +40,8 @@ define(['jquery', 'ConfigProvider', 'DeviceTypeChecker', 'DialougeHelper', 'Spee
 	};
 	
 	mapSearch = new MapSearch({
-		mapContainer: '#map',
-		searchedContentContainer: '.here-map .panel ul',
+		container: '.map-view',
+		display: 'none',
 		credentials: {
 			apiKey: config.MAP.credentials.apiKey
 		},
@@ -67,27 +77,29 @@ define(['jquery', 'ConfigProvider', 'DeviceTypeChecker', 'DialougeHelper', 'Spee
 		chatBox.insertChat({id: param.id, who: "bot", text: param.highlighted.html});
 	};
 	
-	var onChatSend = function(param) {
-		var matchedCommand = dialougeHelper.parseStaticCommand(param.text);
-		onCommandMatch(matchedCommand);
-	};
-	
 	dialougeHelper = new DialougeHelper({
 		callbacks : {
 			onCommandMatch: onCommandMatch
 		}
 	});
 	
+	var onChatSend = function(param) {
+		var matchedCommand = dialougeHelper.parseStaticCommand(param.text);
+		onCommandMatch(matchedCommand);
+	};
+	
 	chatBox = new ChatBox({
-		chatContainer: "#chatbox",
-		inputBox: ".mytext",
+		container: ".chat-box",
+		display: 'none',
 		callbacks: {
 			onChatSend: onChatSend
 		}
 	});
+	
 	var memory = {}; 
 	var toggleTalkPage =  function(bool) {
-		talkNowRangeOuter.toggle(bool);
+		toggleableLoader.toggleInner(!bool);
+		toggleableLoader.toggleOuter(bool);
 		showOnlySelectedSection("#talk");
 	};
 	speechToText = new SpeechToText({
@@ -105,7 +117,7 @@ define(['jquery', 'ConfigProvider', 'DeviceTypeChecker', 'DialougeHelper', 'Spee
 	});
 	
 	textToSpeech = new TextToBotSpeech({
-		container: '#doctor-avatar',
+		container: '.doctor-avatar',
 		applicationId: config.TEXT_TO_SPEECH.credentials.applicationId,
 		pitch: config.TEXT_TO_SPEECH.pitch,
 		rate: config.TEXT_TO_SPEECH.rate,

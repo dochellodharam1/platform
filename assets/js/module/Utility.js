@@ -1,4 +1,5 @@
 define(['jquery'], function($) {
+
 	var generateGuid = function() {
 		var result, i, j;
 		result = '';
@@ -21,8 +22,31 @@ define(['jquery'], function($) {
 		return hash;
 	};
 	
+	var extractInitials = function(str) {
+		var tokens = str.split(' ');
+		var initials = '';
+		for(var i=0; i < tokens.length; i++) {
+			var token = tokens[i];
+			if(token.length) {
+				initials += token[0];
+			}
+		}
+		return initials;
+	};
+	
+	var extractValueAndUnit = function(str) {
+		var value = str.match(/(\d+)/)[0];
+		var unit = str.replace(/[0-9]/g, '');
+		return {
+			'value': parseFloat(value),
+			'unit': unit
+		};
+	};
+	
 	return {
 		generateGuid: generateGuid,
-		hashCode: hashCode
+		hashCode: hashCode,
+		extractInitials: extractInitials,
+		extractValueAndUnit: extractValueAndUnit
 	};
 });

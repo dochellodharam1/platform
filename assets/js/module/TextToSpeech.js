@@ -1,10 +1,17 @@
-define(['Utility'], function(Utility) {
+define(['jquery', 'Utility', 'TemplateProvider'], function($, Utility, TemplateProvider) {
+	var moduleTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
+		<div class="utterance-display-box">
+			<p></p>
+		</div>
+	_TEMPLATE_*/});
+	
 	var speechSynthesis = window.speechSynthesis;
 	
 	var instance = function(settings) {
 		settings = settings || {callbacks : {} };
 		var dummyFn = function(param) {};
 		var defaults = {
+			container: '',
 			pitch: 1,
 			rate: 1,
 			callbacks: {
@@ -18,6 +25,7 @@ define(['Utility'], function(Utility) {
 		};
 		
 		// Attrs
+		var container = settings.container || defaults.container;
 		var pitch = settings.pitch || defaults.pitch;
 		var rate = settings.rate || defaults.rate;
 		
@@ -29,6 +37,13 @@ define(['Utility'], function(Utility) {
 		var onUtterance = settings.callbacks.onUtterance || defaults.callbacks.onUtterance;
 		var onVoicesChange = settings.callbacks.onVoicesChange || defaults.callbacks.onVoicesChange;
 	
+		$(container).append(moduleTemplate);
+		
+		// Module elements
+		var innerCircleBox = $(".circle-animator-box .inner-circle-box");
+		var outerCircleBox = $(".circle-animator-box .outer-circle-box");
+		var utteranceDisplayPanel = $(".utterance-display-box p");
+		
 		speechSynthesis.onvoiceschanged = onVoicesChange;
 		
 		var getDefaultVoice = function() {
@@ -57,6 +72,8 @@ define(['Utility'], function(Utility) {
 			
 			var highlightedHtml = beforeWord + "<span class='highlighted'>" + word + "</span>" + afterWord;
 			var highlightedText = beforeWord + "[[" + word + "]]" + afterWord;
+			
+			utteranceDisplayPanel.html(highlightedHtml);
 			
 			onUtterance({
 				id: Utility.hashCode(txt),

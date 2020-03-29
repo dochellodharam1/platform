@@ -23,6 +23,7 @@ define(['jquery', 'Utility', 'botlibreSdk'], function($, Utility, botlibreSdk) {
 		var applicationId = settings.applicationId || defaults.applicationId;
 		var pitch = settings.pitch || defaults.pitch;
 		var rate = settings.rate || defaults.rate;
+		var widthInPx = $(container).width();
 		
 		// Callbacks
 		var onStart = settings.callbacks.onStart || defaults.callbacks.onStart;
@@ -44,8 +45,9 @@ define(['jquery', 'Utility', 'botlibreSdk'], function($, Utility, botlibreSdk) {
 			{ name: "Lauren Business", gender: "female", avatar: "14013806", voice: "cmu-slt", voiceMod: "default" },
 			{ name: "Michael Business", gender: "male", avatar: "15017070", voice: "cmu-slt", voiceMod: "default" }
 		];
-		
-		var face = faces[8];
+		// male 2
+		// female 7
+		var face = faces[9];
 		
 		SDK.applicationId = applicationId;
 		var sdk = new SDKConnection();
@@ -54,11 +56,9 @@ define(['jquery', 'Utility', 'botlibreSdk'], function($, Utility, botlibreSdk) {
 		web.avatar = face.avatar;
 		web.voice = face.voice;
 		web.voiceMod = face.voiceMod;
-		web.width = "300";
+		web.width = widthInPx;
 		// web.nativeVoice = !true;
 		web.createBox();
-		web.addMessage("Welcome to my website", "", "", "");
-		web.processMessages();
 		
 		$(document).ready(function(){
 			var avatarBox = $("#avatar-avatarbox");
@@ -66,17 +66,24 @@ define(['jquery', 'Utility', 'botlibreSdk'], function($, Utility, botlibreSdk) {
 			var avatarBoxDiv = avatarBox.parent();
 			$(container).append(avatarBox);
 			avatarBoxDiv.remove();
-			
+			/*
 			$( "#avatar-avatar-video" ).on('loadstart', function() {
-			  // console.log( $(this).attr("src") );
-			});
+			  console.log( $(this).attr("src") );
+			});*/
 		});
+		
+		var speak = function(text) {
+			web.addMessage(text, "", "", "");
+			web.processMessages();
+		};
+		
+		speak("");
 		
 		return {
 			getAvailableVoices: function() {  },
 			getCurrentVoice: null,
 			setVoice: function(voice) {  },
-			start: function(txt) { web.addMessage(txt, "", "", ""); web.processMessages();},
+			start: speak,
 			pause: function() { },
 			resume: function() {  },
 			stop: function() { }

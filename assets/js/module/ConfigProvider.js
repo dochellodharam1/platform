@@ -24,6 +24,9 @@ define(['jquery'], function($) {
 				credentials: {
 					apiKey: '9360456286c2406eb3bb1cdda170d743'
 				}
+			},
+			TRACKER: {
+				url: ''
 			}
 		};
 	};
