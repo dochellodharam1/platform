@@ -47,7 +47,7 @@ define(['jquery'], function($) {
 						applicationKey: 'bf2f2efd3ba21591dfd8c2b2dcd8cb53'
 					}
 				}
-			}
+			},
 			TRACKER: {
 				url: 'https://phoenix-event-tracker.herokuapp.com/events'
 			}
