@@ -43,11 +43,28 @@ define(['jquery', 'timeAgo'], function($, timeAgo) {
 		};
 	};
 	
+	var enableToString = function(obj) {
+		if(typeof obj == 'object') {
+			obj.toString = (function(o) {
+				return function() {
+					var str = '{';
+					for(var p in o) {
+						var v = o[p];
+						str += '"' + p + '": "' + v + '"';
+					}
+					str += '}';
+					return str;
+				};
+			})(o);
+		}
+	};
+	
 	return {
 		generateGuid: generateGuid,
 		hashCode: hashCode,
 		extractInitials: extractInitials,
 		extractValueAndUnit: extractValueAndUnit,
-		formatByTimeAgo: timeAgo.format
+		formatByTimeAgo: timeAgo.format,
+		enableToString: enableToString
 	};
 });

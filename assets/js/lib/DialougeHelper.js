@@ -1,123 +1,17 @@
-define(['jquery'], function ($) {
-
-	var dialogues = [
-		{
-			"intent": "hello doctor",
-			"reply": "Hello! What is your name?",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "my name is *name",
-			"reply": "Okay {0}, How you feeling today?",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "(pleople)(you can) call me *name",
-			"reply": "Okay {0}, How you feeling today?",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "hello doctor *verb",
-			"reply": "Hi Neetesh!, How you feeling today?",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "i am (not feeling well)(not feeling good)(not well)(little)(sick)(today)",
-			"reply": "Should I suggest some medicine or doctors nearby?",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "i am feeling *anything",
-			"reply": "do you want to search anything?",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "(ok)(yeah)(yup)(please) suggest (me)(the) :what (in) *tag",
-			"reply": "Ok finding {0} in {1}",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "no thanks",
-			"reply": "You are welcome",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "thanks",
-			"reply": "You are welcome",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "no thank you",
-			"reply": "You are welcome",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "thank you",
-			"reply": "You are welcome",
-			"action": "JUST_REPLY",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "find :what in *where",
-			"reply": "Okay... Searching for {0} in {1}",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "suggest :what in *where",
-			"reply": "Okay... Searching for {0} in {1}",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "search :what in *where",
-			"reply": "Okay... Searching for {0} in {1}",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "display :what in *where",
-			"reply": "Okay... Searching for {0} in {1}",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "find :what (nearme)(near me)(nearby)(near by)",
-			"reply": "Okay... Searching for {0} at your location",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "suggest :what (nearme)(near me)(nearby)(near by)",
-			"reply": "Okay... Searching for {0} at your location",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "search :what (nearme)(near me)(nearby)(near by)",
-			"reply": "Okay... Searching for {0} at your location",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		},
-		{
-			"intent": "display :what (nearme)(near me)(nearby)(near by)",
-			"reply": "Okay... Searching for {0} at your location",
-			"action": "MAP_SEARCH",
-			"type": "NON_CONTEXTUAL"
-		}
-	];
-	
-	
+define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider'], function ($, ConfigProvider, TemplateProvider) {
+	var config = new ConfigProvider();
+	var dialogues = [];
+	var size = 20;
+	var loadDialogues = function(page) {
+		$.get(config.CONVERSATION_API.url, {'page': page, 'size': size}).then(function(res) {
+			var content = res.content;
+			dialogues = [...dialogues, ...content];
+			if (!res.last) {
+				loadDialogues(++page);
+			}
+		});
+	};
+	loadDialogues(0);
 	
 	var instance = function(settings) {
 		settings = settings || {callbacks : {} };

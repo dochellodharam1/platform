@@ -51,9 +51,7 @@ define(['jquery', 'qrCode', 'lib/ConfigProvider', 'lib/DeviceTypeChecker', 'lib/
 	}
 	
 	var notificationProvider = new NotificationProvider({
-		apiKey: config.NEWS_API.credentials.apiKey,
 		container: "#notifications-dropdown",
-		sources: config.NEWS_API.sources,
 		callbacks: {
 			onNotificationClick: dummyFn
 		}

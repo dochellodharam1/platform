@@ -1,11 +1,11 @@
-define(['jquery', 'lib/ConfigProvider'], function($, ConfigProvider) {
+define(['jquery', 'lib/Utility', 'lib/ConfigProvider'], function($, Utility, ConfigProvider) {
 	var config = new ConfigProvider();
+	var sessionId = Utility.generateGuid();
 	var trackFn = function(userId, metadata) {
-		var data = encodeURI(metadata);
-		$.get(config.TRACKER.url, {"userId": userId, "metadata": data})
-		.then(function(){
-			console.log("done");
-		});
+		Utility.enableToString(metadata);
+		var data = {"u": userId, "s": sessionId, "m": metadata.toString()};
+		$.get(config.TRACKER.url, data)
+		.then(function(){});
 	};
 	window.track = trackFn;
 	return {
