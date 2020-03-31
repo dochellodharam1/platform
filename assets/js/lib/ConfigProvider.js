@@ -26,26 +26,17 @@ define(['jquery'], function($) {
 			CONVERSATION_API: {
 				url: 'https://phoenix-conversation-api.herokuapp.com/data'
 			},
-			MEDICAL_API: {
-				drugSearch: {
-					url: '',
-					credentials: {
-						applicationId: '6291889508634688769'
-					}
-				},
-				symptoms: {
-					url: '',
-					credentials: {
-						applicationId: 'b301453a',
-						applicationKey: 'bf2f2efd3ba21591dfd8c2b2dcd8cb53'
-					}
-				},
-				diagnosis: {
-					url: 'https://api.infermedica.com/v2/diagnosis',
-					credentials: {
-						applicationId: 'b301453a',
-						applicationKey: 'bf2f2efd3ba21591dfd8c2b2dcd8cb53'
-					}
+			MEDICINE_API: {
+				url: '',
+				credentials: {
+					applicationId: '6291889508634688769'
+				}
+			},
+			DIAGNOSTIC_API:{
+				url: 'https://api.infermedica.com/v2',
+				credentials: {
+					applicationId: 'b301453a',
+					applicationKey: 'bf2f2efd3ba21591dfd8c2b2dcd8cb53'
 				}
 			},
 			TRACKER: {

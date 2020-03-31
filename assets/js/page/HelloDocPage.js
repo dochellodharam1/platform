@@ -1,5 +1,8 @@
-define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHelper', 'module/SpeechToText', 'module/TextToBotSpeech', 'module/ChatBox', 'module/MapSearch', 'module/ToggleableLoader'], 
-	function ($, ConfigProvider, TemplateProvider, DialougeHelper, SpeechToText, TextToBotSpeech, ChatBox, MapSearch, ToggleableLoader) {
+define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHelper', 'lib/MedicalDiagnostic', 
+		'module/SpeechToText', 'module/TextToBotSpeech', 'module/ChatBox', 'module/MapSearch', 'module/ToggleableLoader'], 
+	function ($, ConfigProvider, TemplateProvider, DialougeHelper, MedicalDiagnostic, 
+		SpeechToText, TextToBotSpeech, ChatBox, MapSearch, ToggleableLoader) {
+			
 	var pageTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div class="map-view"></div>
 		<!-- <div class="loader-view" style="height: 350px; width: 350px; margin: 0 auto;"></div> -->
@@ -16,9 +19,10 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHel
 	var speechToText = null;
 	var textToSpeech = null;
 	var mapSearch = null;
+	var medicalDiagnostic = null;
 	var toggleableLoader = new ToggleableLoader({
 		container: '.loader-view',
-		display: 'block',
+		display: 'none',
 		displayInner: 'block',
 		displayOuter: 'none'
 	});
@@ -27,6 +31,7 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHel
 	var dummyFn = function(param) {  };
 	var onSpeechToTextResult = function(param) {
 		chatBox.insertChat({who: "me", text: param.userSaid});
+		// TODO:: REPLY
 	};
 	
 	var onMapSearchComplete = function(param) {
@@ -77,8 +82,25 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHel
 		chatBox.insertChat({id: param.id, who: "bot", text: param.highlighted.html});
 	};
 	
+	var prepareSpeechToText = function(params){
+		speechToText = new SpeechToText({
+			continuous: config.SPEECH_TO_TEXT.continuous,
+			autoRestart: config.SPEECH_TO_TEXT.autoRestart,
+			instructionsText: config.SPEECH_TO_TEXT.instructionsText,
+			commands: params,
+			callbacks: {
+				onListenStart: function() {toggleTalkPage(true);},
+				onListenEnd: function() {toggleTalkPage(false);},
+				
+				onError: dummyFn,	
+				onCapture: onSpeechToTextResult
+			}
+		});
+	};
+	
 	dialougeHelper = new DialougeHelper({
 		callbacks : {
+			onCommandFetch: prepareSpeechToText,
 			onCommandMatch: onCommandMatch
 		}
 	});
@@ -102,19 +124,6 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHel
 		toggleableLoader.toggleOuter(bool);
 		showOnlySelectedSection("#talk");
 	};
-	speechToText = new SpeechToText({
-		continuous: config.SPEECH_TO_TEXT.continuous,
-		autoRestart: config.SPEECH_TO_TEXT.autoRestart,
-		instructionsText: config.SPEECH_TO_TEXT.instructionsText,
-		commands: dialougeHelper.getCommands(),
-		callbacks: {
-			onListenStart: function() {toggleTalkPage(true);},
-			onListenEnd: function() {toggleTalkPage(false);},
-			
-			onError: dummyFn,	
-			onCapture: onSpeechToTextResult
-		}
-	});
 	
 	textToSpeech = new TextToBotSpeech({
 		container: '.doctor-avatar',
@@ -128,6 +137,17 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHel
 			onResume: dummyFn,
 			onUtterance: displayTextResponse,
 			onVoicesChange: dummyFn
+		}
+	});
+	
+	medicalDiagnostic = new MedicalDiagnostic({
+		callbacks: {
+			onExtractSymptom: function(param) {
+				console.log(param);
+			},
+			onDiagnose: function(param){
+				console.log(param);
+			}
 		}
 	});
 	

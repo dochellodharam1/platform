@@ -1,17 +1,8 @@
 define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider'], function ($, ConfigProvider, TemplateProvider) {
 	var config = new ConfigProvider();
 	var dialogues = [];
-	var size = 20;
-	var loadDialogues = function(page) {
-		$.get(config.CONVERSATION_API.url, {'page': page, 'size': size}).then(function(res) {
-			var content = res.content;
-			dialogues = [...dialogues, ...content];
-			if (!res.last) {
-				loadDialogues(++page);
-			}
-		});
-	};
-	loadDialogues(0);
+	var size = 100;
+	
 	
 	var instance = function(settings) {
 		settings = settings || {callbacks : {} };
@@ -19,10 +10,12 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider'], function ($, Co
 		
 		var defaults = {
 			callbacks: {
+				onCommandFetch: dummyFn,
 				onCommandMatch: dummyFn
 			}
 		};
 		
+		var onCommandFetch = settings.callbacks.onCommandFetch || defaults.callbacks.onCommandFetch;
 		var onCommandMatch = settings.callbacks.onCommandMatch || defaults.callbacks.onCommandMatch;
 		
 		var formatReply = function(rep, args) {
@@ -73,6 +66,19 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider'], function ($, Co
 				source: 'TEXT'
 			};
 		};
+		
+		var loadDialogues = function(page) {
+			$.get(config.CONVERSATION_API.url, {'page': page, 'size': size}).then(function(res) {
+				var content = res.content;
+				dialogues = [...dialogues, ...content];
+				if (!res.last) {
+					loadDialogues(++page);
+				} else {
+					onCommandFetch(getCommands());
+				}
+			});
+		};
+		loadDialogues(0);
 		
 		return {
 			getCommands: getCommands,
