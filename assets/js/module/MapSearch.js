@@ -35,7 +35,7 @@ define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 	_TEMPLATE_*/});
 	
 	var instance = function(settings) {
-		settings = settings || {callbacks : {} };
+		settings = settings || {};
 		var dummyFn = function(param) {};
 		
 		var defaults = {
@@ -43,19 +43,12 @@ define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 			display: 'block',
 			credentials: {
 				apiKey: 'FsjN5-JHlUTgC6Tb6M5bP8PH3hTLFR_dchOLAexbKA4'
-			},
-			callbacks: {
-				onSearchComplete: dummyFn,
-				onError: dummyFn
 			}
 		};
 
 		var container = settings.container || defaults.container;
 		var display = settings.display || defaults.display;
 		var apiKey = settings.credentials.apiKey || defaults.credentials.apiKey;
-		
-		var onSearchComplete = settings.callbacks.onSearchComplete || defaults.callbacks.onSearchComplete;
-		var onError = settings.callbacks.onError || defaults.callbacks.onError;
 		
 		var searchedContentContainer = '.here-map .panel ul';
 		$(container).append(TemplateProvider.parse(moduleTemplate, {'display': display}));
@@ -78,10 +71,10 @@ define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 		
 		var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
 		
-		var searchByLatLong = function (query) {
+		var searchByLatLong = function (query, onSearchComplete, onError) {
 			//var position = { lat : 28.502388, lng : 77.044708};
 			moveMapToCoordinates(query.position);
-			populatePlaces(query);
+			populatePlaces(query, onSearchComplete, onError);
 		};
 		
 		var bubble;
@@ -121,20 +114,24 @@ define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 			map.setZoom(13);
 		};
 		
-		var onResult = function (result) {
+		var onResult = function (result, onSearchComplete) {
 			var places = result.results.items;
 			addPlacesToMap(places);
 			addPlacesToPanel(places);
+			onSearchComplete({
+				count: places.length,
+				items: places
+			});
 		};
 		
-		var populatePlaces = function(query) {
+		var populatePlaces = function(query, onSearchComplete, onError) {
 			var loc = query.position;
 			var placesService = platform.getPlacesService();
 			var parameters = {
 				at: loc.lat+ ','+ loc.lng,
 				q: query.what
 			};
-			placesService.search(parameters, onResult, onError);
+			placesService.search(parameters, function(result){ onResult(result, onSearchComplete);}, onError);
 		};
 		
 		var placesContainer = document.getElementById('panel');
@@ -153,7 +150,7 @@ define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 		};
 		window.addEventListener('resize', function() { map.getViewPort().resize(); });
 		
-		var searchWrap = function(json) {
+		var searchWrap = function(json, onSearchComplete, onError) {
 			if( ["nearby", "near by", "nearme", "near me"].indexOf(json.where) > -1) {
 				if (navigator.geolocation) {
 					navigator.geolocation.getCurrentPosition(function(loc) {
@@ -163,7 +160,7 @@ define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 								lat : loc.coords.latitude,
 								lng : loc.coords.longitude
 							}
-						});
+						}, onSearchComplete, onError);
 					});
 				}
 			} else {
@@ -177,7 +174,7 @@ define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 							lat : loc.Latitude,
 						    lng : loc.Longitude
 						}
-					});
+					}, onSearchComplete, onError);
 				});
 			}
 		};

@@ -27,6 +27,38 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider'], function ($, Co
 			}
 			return rep;
 		};		
+		
+		var prepareReplyFn = function(replyTemplate, params) {
+			return formatReply(replyTemplate, params);
+		};
+		
+		var getPureIntent = function(intent) {
+			return intent.replace(/ *\([^)]*\) */g, "");
+		};
+		
+		var getUserSaid = function(intent, params) {
+			var pureIntent = getPureIntent(intent);
+			if (params.length) {
+				if(pureIntent.indexOf('*') != -1) {
+					pureIntent = pureIntent.split('*')[0] + params[params.length - 1];
+				}
+				if(pureIntent.indexOf(':') != -1) {
+					var tokens = pureIntent.split(' ');
+					var j = 0;
+					var userSaid = '';
+					for(var i = 0; i < tokens.length; i++) {
+						var token = tokens[i];
+						if(token.indexOf(':') != -1) {
+							userSaid += ' ' + params[j++];
+						} else {
+							userSaid += ' ' + token;
+						}
+					}
+					pureIntent = userSaid;
+				}
+			}
+			return pureIntent;
+		};
 					
 		var prepareCommand = function(dialogue) {
 			return {
@@ -34,9 +66,11 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider'], function ($, Co
 				callback: function(...params) {
 					onCommandMatch({
 						dialogue: dialogue,
+						pureIntent: getPureIntent(dialogue.intent),
+						userSaid: getUserSaid(dialogue.intent, params),
 						formattedReply: formatReply(dialogue.reply, params),
 						keywords: params,
-						source: 'VOICE'
+						source: 'VOICE_REGISTERED_COMMAND'
 					});
 				}
 			};
@@ -48,23 +82,6 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider'], function ($, Co
 				cmds.push(prepareCommand(dialogue));
 			});
 			return cmds;
-		};
-		
-		var parseStaticCommand = function(staticCommand) {
-			// TODO:: parse command coming from chat box
-			var dialogue = {
-				"intent": "find :what in *where",
-				"reply": "Okay... Searching for {0} in {1}",
-				"action": "MAP_SEARCH",
-				"type": "NON_CONTEXTUAL"
-			};
-			var keywords = [];
-			return {
-				dialogue : dialogue,
-				formattedReply: formatReply(dialogue.reply, keywords),
-				keywords : keywords,
-				source: 'TEXT'
-			};
 		};
 		
 		var loadDialogues = function(page) {
@@ -82,7 +99,7 @@ define(['jquery', 'lib/ConfigProvider', 'lib/TemplateProvider'], function ($, Co
 		
 		return {
 			getCommands: getCommands,
-			parseStaticCommand: parseStaticCommand 
+			prepareReply: prepareReplyFn
 		};
 	};
 	return instance;

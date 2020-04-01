@@ -6,38 +6,32 @@ define(['lib/ConfigProvider'], function(ConfigProvider) {
 		'App-Id': config.credentials.applicationId,
 		'App-Key': config.credentials.applicationKey
 	};
-	var instance = function(settings) {
-		settings = settings || {callbacks : {} };
-		var dummyFn = function(param) {};
-		
-		var defaults = {
-			callbacks: {
-				onExtractSymptom: dummyFn,
-				onDiagnose: dummyFn
-			}
-		};
-		
-		// Callbacks
-		var onExtractSymptom = settings.callbacks.onExtractSymptom || defaults.callbacks.onExtractSymptom;
-		var onDiagnose = settings.callbacks.onDiagnose || defaults.callbacks.onDiagnose;
-		
-		var callApi = function(uri, data, onResult) {
+	var instance = function() {		
+		var callApi = function(uri, json, onResult, onError) {
 			$.ajax({
 				url: apiUrl + uri,
 				method: 'POST',
 				headers: apiHeader,
 				contentType: 'application/json',
-				data : data
-			}).then(function(result) {
-				onResult({
-					request: data,
-					response: result
-				});
+				data : JSON.stringify(json),
+				success: function(result, textStatus, jqXHR) {
+					onResult({
+						request: json,
+						response: result
+					});
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					onError({
+						'jqXHR': jqXHR,
+						'textStatus': textStatus,
+						'errorThrown': errorThrown
+					});
+				}
 			});
 		};
 		
-		var extractSymptomsFn = function(text, otherSymptoms) {
-			var data = { 'text' : text };
+		var extractSymptomsFn = function(text, otherSymptoms, onExtractSymptoms, onError) {
+			var data = { "text" : text };
 			if(otherSymptoms) {
 				var arr = [];
 				for (var i = 0; i < otherSymptoms.length; i++) {
@@ -45,11 +39,11 @@ define(['lib/ConfigProvider'], function(ConfigProvider) {
 				}
 				data['context'] = arr;
 			}
-			callApi('/parse', data, onExtractSymptom);
+			callApi('/parse', data, onExtractSymptoms, onError);
 		};
 		
-		var diagnoseFn = function(request) {
-			callApi('/diagnosis', request, onDiagnose);
+		var diagnoseFn = function(request, onDiagnose, onError) {
+			callApi('/diagnosis', request, onDiagnose, onError);
 		};
 		
 		return {

@@ -1,4 +1,4 @@
-define(['jquery', 'timeAgo'], function($, timeAgo) {
+define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilarity) {
 
 	var generateGuid = function() {
 		var result, i, j;
@@ -59,12 +59,48 @@ define(['jquery', 'timeAgo'], function($, timeAgo) {
 		}
 	};
 	
+	var collectFn = function(arr, fn) {
+		var collected = [];
+		for(var i = 0; i < arr.length; i++) {
+			collected.push(fn(arr[i]));
+		}
+		return collected;
+	};
+	
+	var findFirstFn = function(arr, fn) {
+		for(var i = 0; i < arr.length; i++) {
+			var item = arr[i];
+			if(fn(item)) {
+				return item;
+			}
+		}
+		return null;
+	};
+	
+	var joinFn = function(arr, del) {
+		var joined = arr[0];
+		for(var i = 1; i < arr.length; i++) {
+			joined += del + arr[i];
+		}
+		return joined;
+	};
+	
+	var findBestMatchedStringFn = function(str, arr) {
+		debugger;
+		var res = textSimilarity.findBestMatch(str, arr);
+		return res.bestMatch.target;
+	};
+	
 	return {
 		generateGuid: generateGuid,
 		hashCode: hashCode,
 		extractInitials: extractInitials,
 		extractValueAndUnit: extractValueAndUnit,
 		formatByTimeAgo: timeAgo.format,
-		enableToString: enableToString
+		enableToString: enableToString,
+		collect: collectFn,
+		findFirst: findFirstFn,
+		join: joinFn,
+		findBestMatchedString: findBestMatchedStringFn 
 	};
 });

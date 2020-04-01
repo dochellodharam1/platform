@@ -7,7 +7,8 @@ requirejs.config({
 		annyang: 'vendor/annyang.min',
 		annyangUI: 'vendor/speechkitt.min',
 		botlibreSdk: 'vendor/botlibre_sdk',
-		timeAgo: 'vendor/timeago.full.min'
+		timeAgo: 'vendor/timeago.full.min',
+		textSimilarity: 'vendor/string-similarity.min'
     }
 });
 requirejs([

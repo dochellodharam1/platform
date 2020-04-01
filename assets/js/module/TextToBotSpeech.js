@@ -73,8 +73,10 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 		});
 		
 		var speak = function(text) {
+			onStart();
 			web.addMessage(text, "", "", "");
 			web.processMessages();
+			onEnd();
 		};
 		
 		speak("");

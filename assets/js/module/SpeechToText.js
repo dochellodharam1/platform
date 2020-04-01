@@ -83,8 +83,8 @@ define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 			onCapture({
 				userSaid: userSaid,
 				commandText: commandText,
-				isCommand: true,
-				keywords: keywordsHolder[commandText]
+				keywords: keywordsHolder[commandText],
+				source: 'VOICE_REGISTERED_COMMAND_PROCESSED'
 			});
 		});
 		annyang.addCallback("resultNoMatch", function(e) {
@@ -92,8 +92,8 @@ define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 			onCapture({
 				userSaid: possibleSentence,
 				commandText: null,
-				isCommand: false,
-				keywords: possibleSentence
+				keywords: possibleSentence,
+				source: 'RAW_VOICE_INPUT'
 			});
 		});
 		// Tell KITT to use annyang
@@ -115,15 +115,6 @@ define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 		// Render KITT's interface
 		SpeechKITT.vroom();
 		
-		var paused = false;
-		var pauseAndResume = function() {
-			if (paused) {
-				annyang.resume();
-			} else {
-				annyang.pause();
-			}
-			paused = !paused;
-		};
 		var start = function() {
 			annyang.start({
 				continuous: continuous,
@@ -133,7 +124,8 @@ define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 		return {
 			addCommands: addCommands,
 			start: start,
-			stop: pauseAndResume,
+			pause: annyang.pause,
+			resume: annyang.resume,
 			abort: annyang.abort			
 		};
 	};
