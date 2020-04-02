@@ -13,8 +13,20 @@ define(['jquery'], function($) {
 				instructionsText: 'Say! Hello Doc'
 			},
 			TEXT_TO_SPEECH: {
-				pitch: 1,
-				rate: 0.9,
+				bots: [
+						{
+							avatar: '13974718',
+							gender: 'male',
+							speechRate: 0.9,
+							nativeVoiceName: 'Google UK English Male'
+						},
+						{
+							avatar: '21260897',
+							gender: 'female',
+							speechRate: 0.9,
+							nativeVoiceName: 'Google UK English Female'
+						}
+				][0],
 				credentials: {
 					applicationId: '6291889508634688769'
 				}
@@ -29,7 +41,7 @@ define(['jquery'], function($) {
 			MEDICINE_API: {
 				url: '',
 				credentials: {
-					applicationId: '6291889508634688769'
+					applicationId: ''
 				}
 			},
 			DIAGNOSTIC_API:{

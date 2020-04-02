@@ -6,8 +6,7 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 		var defaults = {
 			container: '',
 			applicationId: '',
-			pitch: 1,
-			rate: 1,
+			bot: { avatar: '21260897', gender: 'female', speechRate: 0.9, nativeVoiceName: 'Hindi Female' },
 			callbacks: {
 				onStart: dummyFn,
 				onEnd: dummyFn,
@@ -21,8 +20,7 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 		// Attrs
 		var container = settings.container || defaults.container;
 		var applicationId = settings.applicationId || defaults.applicationId;
-		var pitch = settings.pitch || defaults.pitch;
-		var rate = settings.rate || defaults.rate;
+		var bot = settings.bot || defaults.bot;
 		var widthInPx = $(container).width();
 		
 		// Callbacks
@@ -32,32 +30,21 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 		var onResume = settings.callbacks.onResume || defaults.callbacks.onResume;
 		var onUtterance = settings.callbacks.onUtterance || defaults.callbacks.onUtterance;
 		var onVoicesChange = settings.callbacks.onVoicesChange || defaults.callbacks.onVoicesChange;
-	
-		var faces = [
-			{ name: "Avery Business", gender: "female", avatar: "21473182", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Chiyo Business", gender: "female", avatar: "25338776", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Eddie Tech", gender: "male", avatar: "13974718", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Annelies Business", gender: "female", avatar: "20031372", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Sandy 3", gender: "female", avatar: "12601502", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Eddie Business", gender: "male", avatar: "13974700", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Olympia Business", gender: "female", avatar: "20595840", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Andie Business", gender: "female", avatar: "21260897", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Lauren Business", gender: "female", avatar: "14013806", voice: "cmu-slt", voiceMod: "default" },
-			{ name: "Michael Business", gender: "male", avatar: "15017070", voice: "cmu-slt", voiceMod: "default" }
-		];
-		// male 2
-		// female 7
-		var face = faces[9];
 		
 		SDK.applicationId = applicationId;
+		SDK.speechRate = bot.speechRate;
 		var sdk = new SDKConnection();
 		var web = new WebAvatar();
 		web.connection = sdk;
-		web.avatar = face.avatar;
-		web.voice = face.voice;
-		web.voiceMod = face.voiceMod;
+		web.avatar = bot.avatar;
+		web.voice = 'cmu-slt';
+		web.voiceMod = 'default';
+		
+		// Responsive voice support
+		web.nativeVoice = true;
+		web.nativeVoiceName = bot.nativeVoiceName;
+
 		web.width = widthInPx;
-		// web.nativeVoice = !true;
 		web.createBox();
 		
 		$(document).ready(function(){
@@ -78,12 +65,11 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 			web.processMessages();
 			onEnd();
 		};
-		
 		speak("");
 		
 		return {
-			getAvailableVoices: function() {  },
-			getCurrentVoice: null,
+			getAvailableVoices: function() {},
+			getCurrentVoice: bot.nativeVoiceName,
 			setVoice: function(voice) {  },
 			start: speak,
 			pause: function() { },

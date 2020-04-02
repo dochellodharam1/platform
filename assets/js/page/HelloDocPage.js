@@ -95,7 +95,6 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 					var m = param.metadata;
 					var getChoices = function(item) { return Utility.collect(item.choices, function(c) { return c.label; }) };
 					if(m.waitingFor) {
-						debugger;
 						var answerToPreviousQuestion = Utility.findBestMatchedString(param.userInput, getChoices(m.waitingFor));
 						var choice = Utility.findFirst(m.waitingFor.choices, function(c) {return c.label == answerToPreviousQuestion;});
 						if(choice) {
@@ -124,7 +123,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 									break;
 							}
 							q += '. Say ' + Utility.join(getChoices(item), ' or ');
-							debugger;
+							
 							preAction({
 								'metadata': { 'request' : req, 'conditions': res.conditions, 'waitingFor': item },
 								'userInput': null,
@@ -204,7 +203,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		switch(param.source) {
 			case 'RAW_VOICE_INPUT':
 				chatBox.insertChat({who: 'me', text: param.userSaid});
-				debugger;
+				
 				preAction({
 					'metadata': lastContext ? lastContext.metadata : null,
 					'userInput': param.userSaid,
@@ -216,7 +215,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				});
 				break;
 			case 'RAW_TEXT_INPUT': // Input already in chat box
-				debugger;
+				
 				preAction({
 					'metadata': lastContext ? lastContext.metadata : null,
 					'userInput': param.text,
@@ -228,7 +227,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				});
 				break;
 			case 'VOICE_REGISTERED_COMMAND': // Handlled in next case VOICE_REGISTERED_COMMAND_PROCESSED
-				debugger;
+				
 				var pendingAction = lastContext ? lastContext.action : 'NO_ACTION';
 				var isToPerformLastAction = param.dialogue.action == 'DO_LAST_ACTION';
 				var actionToBeperformed = isToPerformLastAction ? pendingAction : param.dialogue.action;
@@ -250,13 +249,14 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 	};
 	
 	var prepareSpeechToText = function(params){
+		var started = false;
 		speechToText = new SpeechToText({
 			continuous: config.SPEECH_TO_TEXT.continuous,
 			autoRestart: config.SPEECH_TO_TEXT.autoRestart,
 			instructionsText: config.SPEECH_TO_TEXT.instructionsText,
 			commands: params,
 			callbacks: {
-				onListenStart: function() {toggleTalkPage(true);},
+				onListenStart: function() { started = true; toggleTalkPage(true);},
 				onListenEnd: function() {toggleTalkPage(false);},
 				
 				onError: dummyFn,	
@@ -266,11 +266,10 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		textToSpeech = new TextToBotSpeech({
 			container: '.doctor-avatar',
 			applicationId: config.TEXT_TO_SPEECH.credentials.applicationId,
-			pitch: config.TEXT_TO_SPEECH.pitch,
-			rate: config.TEXT_TO_SPEECH.rate,
+			bot: config.TEXT_TO_SPEECH.bot,
 			callbacks: {
-				onStart: speechToText.pause,
-				onEnd: speechToText.resume,
+				onStart: function() { if(started) speechToText.pause(); },
+				onEnd: function() { if(started) speechToText.resume(); },
 				onPause: dummyFn,
 				onResume: dummyFn,
 				onUtterance: function(param) {
