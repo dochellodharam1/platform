@@ -6,6 +6,8 @@ define(['lib/ConfigProvider'], function(ConfigProvider) {
 		'App-Id': config.credentials.applicationId,
 		'App-Key': config.credentials.applicationKey
 	};
+	
+	var minSymtomsToAsk = config.minSymtomsToAsk;
 	var instance = function() {		
 		var callApi = function(uri, json, onResult, onError) {
 			$.ajax({
@@ -15,9 +17,12 @@ define(['lib/ConfigProvider'], function(ConfigProvider) {
 				contentType: 'application/json',
 				data : JSON.stringify(json),
 				success: function(result, textStatus, jqXHR) {
+					var evidenceLength = json.evidence ? json.evidence.length : 0;
+					var hasAnalysisBool = evidenceLength >= minSymtomsToAsk;
 					onResult({
 						request: json,
-						response: result
+						response: result,
+						hasAnalysis: hasAnalysisBool
 					});
 				},
 				error: function (jqXHR, textStatus, errorThrown) {

@@ -6,7 +6,7 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 		var defaults = {
 			container: '',
 			applicationId: '',
-			bot: { avatar: '21260897', gender: 'female', speechRate: 0.9, nativeVoiceName: 'Hindi Female' },
+			bot: { avatar: '21260897', gender: 'female', speechRate: 0.9, nativeVoiceName: 'Google UK English Female' },
 			callbacks: {
 				onStart: dummyFn,
 				onEnd: dummyFn,

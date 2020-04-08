@@ -91,6 +91,40 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 		return res.bestMatch.target;
 	};
 	
+	var onWindowResizeFn = function(fn) {
+		var onWindowSizeChange = function() {
+			fn({
+				'width': window.innerWidth,
+				'height': window.innerHeight
+			});
+		};
+		window.onresize = onWindowSizeChange;
+		window.onload = onWindowSizeChange;
+		onWindowSizeChange();
+	};
+	
+	var fitOnWindowResizeFn = function(obj) {
+		var includedHeight = function(h, item) {return h + (item ? $(item).height() : 0);};
+		(function(sc, it, iTop, iBottom, ar) {
+			ar = ar ? ar : 0.5;
+			onWindowResizeFn(function(size) {
+				var staticSize = 0;
+				for(var i = 0; i < sc.length; i++) {
+					staticSize += $(sc[i]).height();
+				}
+				var expandableHeight = size.height - staticSize;
+				var itemHeight = $(it).height();
+				if(itemHeight < expandableHeight) {
+					var extraHeight = expandableHeight - itemHeight;
+					var paddingTop = includedHeight(extraHeight * ar, iTop);
+					var paddingBottom = includedHeight(extraHeight  * (1 - ar), iBottom);
+					$(it).css('padding-top', paddingTop + 'px');
+					$(it).css('padding-bottom', paddingBottom + 'px');
+				}
+			});
+		})(obj.staticContainers, obj.itemToFit, obj.includeTopHeightFor, obj.includeBottomHeightFor, obj.topToBottomRatio);
+	};
+	
 	return {
 		generateGuid: generateGuid,
 		hashCode: hashCode,
@@ -101,6 +135,8 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 		collect: collectFn,
 		findFirst: findFirstFn,
 		join: joinFn,
-		findBestMatchedString: findBestMatchedStringFn 
+		findBestMatchedString: findBestMatchedStringFn ,
+		onWindowResize: onWindowResizeFn,
+		fitOnWindowResize: fitOnWindowResizeFn
 	};
 });

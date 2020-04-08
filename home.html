@@ -72,7 +72,7 @@
                     <div class="container">
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-search"></i></span>
-                            <input type="text" class="form-control" placeholder="Search">
+                            <input type="text" class="form-control" placeholder="medicine: Dolo 650 | doctors: nearby">
                             <span class="input-group-addon close-search"><i class="fa fa-times"></i></span>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                         <button type="button" class="navbar-toggle navbar-toggle-custom" data-toggle="collapse" data-target="#navbar-menu">
                             <i class="fa fa-bars"></i>
                         </button>
-                        <a class="navbar-brand" href="#brand">
+                        <a class="navbar-brand" href="#hello">
 							<p class="logo-text-wrap">
 								<span class="logo-text">Hello Doc!</span>
 							</p>
@@ -124,13 +124,13 @@
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="navbar-menu">
                         <ul class="nav navbar-nav navbar-right page-menu" data-in="fadeInDown" data-out="fadeOutUp">
-                            <li><a href="#hello">Hello</a></li>                    
+                            <!-- <li><a href="#hello">Hello</a></li>                    
                             <li><a href="#about">About</a></li>                    
                             <li><a href="#service">Services</a></li>                    
                             <li><a href="#portfolio">Portfolio</a></li>                    
                             <li><a href="#pricing">Pricing</a></li>                    
                             <li><a href="#blog">Blog</a></li>                    
-                            <li><a href="#contact">Contact</a></li>  
+                            <li><a href="#contact">Contact</a></li>  -->
                         </ul>
                     </div><!-- /.navbar-collapse -->
                 </div>  
@@ -140,24 +140,26 @@
                 <div class="side">
                     <a href="#" class="close-side"><i class="fa fa-times"></i></a>
                     <div class="widget">
-                        <h6 class="title">Custom Pages</h6>
+                        <h6 class="title">Search</h6>
                         <ul class="link">
-                            <li><a href="#about">About</a></li>
+                            <!-- <li><a href="#about">About</a></li>
                             <li><a href="#service">Services</a></li>
                             <li><a href="#blog">Blog</a></li>
                             <li><a href="#portfolio">Portfolio</a></li>
-                            <li><a href="#contact">Contact</a></li>
+                            <li><a href="#contact">Contact</a></li> -->
+							<li><a class="closeable" href="#find">Medicine</a></li>
+							<li><a class="closeable" href="#find">Hospital/Clinic</a></li>
                         </ul>
                     </div>
                     <div class="widget">
-                        <h6 class="title">Additional Links</h6>
+                        <h6 class="title">Updates</h6>
                         <ul class="link">
-                            <li><a href="#video">Videos</a></li>
-                            <li><a href="#featured">Featured</a></li>
+                            <li><a href="#video">Seasonal Disease Updates - Coming Soon!</a></li>
+                            <!-- <li><a href="#featured">Featured</a></li>
                             <li><a href="#impress">Impression</a></li>
                             <li><a href="#skill">Skills</a></li>
                             <li><a href="#testimonial">Testimonial</a></li>
-                            <li><a href="#subscribe">Subscribe here</a></li>
+                            <li><a href="#subscribe">Subscribe here</a></li> -->
                         </ul>
                     </div>
                 </div>
@@ -179,7 +181,7 @@
 			
 			 <!--Talk Sections-->
 
-            <section id="talk" class="home bg-mega">
+            <section id="talk" class="home bg-mega" style="display: none;">
                 <div class="overlay"></div>
                 <div class="container">
                     <div class="row">
@@ -190,7 +192,7 @@
 
 
             <!--About Sections-->
-            <section id="about" class="about roomy-100">
+            <section id="about" class="about roomy-100" style="display: none;">
                 <div class="container">
                     <div class="row">
                         <div class="main_about">
@@ -316,7 +318,7 @@
 
 
             <!--Video section-->
-            <section id="video" class="video">
+            <section id="video" class="video" style="display: none;">
                 <div class="overlay"></div>
                 <div class="main_video roomy-100 m-top-100 m-bottom-100 text-center">
                     <div class="video_text text-center">
@@ -325,7 +327,7 @@
                 </div>
             </section><!--End off video section -->
 
-			<section id="featured" class="video">
+			<section id="featured" class="video" style="display: none;">
 				<div class="container">
 					<div class="row">
 						<div class="main_featured m-top-100">
@@ -378,7 +380,7 @@
 
 
             <!--Service Section-->
-            <section id="service" class="service">
+            <section id="service" class="service" style="display: none;">
                 <div class="container">
                     <div class="row">
                         <div class="main_service roomy-100">
@@ -429,7 +431,7 @@
 
 
             <!--Impress section-->
-            <section id="impress" class="impress roomy-100">
+            <section id="impress" class="impress roomy-100" style="display: none;">
                 <div class="overlay"></div>
                 <div class="container">
                     <div class="row">
@@ -453,7 +455,7 @@
 
 
             <!--Portfolio Section-->
-            <section id="portfolio" class="portfolio lightbg">
+            <section id="portfolio" class="portfolio lightbg" style="display: none;">
                 <div class="container">
                     <div class="row">
                         <div class="main_portfolio roomy-100">
@@ -560,7 +562,7 @@
 
 
             <!--Skill Sections-->
-            <section id="skill" class="skill roomy-100">
+            <section id="skill" class="skill roomy-100" style="display: none;">
                 <div class="container">
                     <div class="row">
                         <div class="main_skill">
@@ -649,7 +651,7 @@
 
 
             <!--Testimonial Section-->
-            <section id="testimonial" class="testimonial fix">
+            <section id="testimonial" class="testimonial fix" style="display: none;">
                 <div class="overlay"></div>
                 <div class="container">
                     <div class="row">
@@ -734,7 +736,7 @@
 
 
             <!--Pricing Section-->
-            <section id="pricing" class="pricing lightbg">
+            <section id="pricing" class="pricing lightbg" style="display: none;">
                 <div class="container">
                     <div class="row">
                         <div class="main_pricing roomy-100">
@@ -833,7 +835,7 @@
 
 
             <!--client brand section-->
-            <section id="cbrand" class="cbrand">
+            <section id="cbrand" class="cbrand" style="display: none;">
                 <div class="container">
                     <div class="row">
                         <div class="main_cbrand text-center roomy-100">
@@ -874,7 +876,7 @@
 
 
             <!--Subscribe section-->
-            <section id="subscribe" class="subscribe roomy-100 fix">
+            <section id="subscribe" class="subscribe roomy-100 fix" style="display: none;">
                 <div class="overlay"></div>
                 <div class="container">
                     <div class="row">
@@ -900,11 +902,41 @@
                     </div><!--End off row -->
                 </div><!--End off container -->
             </section><!-- End off Impress section-->
+			
+			<!--Subscribe section-->
+            <section id="find" class="subscribe roomy-100 fix" style="display: none;">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="main_subscribe text-center">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <!-- <h2 class="text-white">SUBSCRIBE US</h2>
+                                <p class="m-top-30 text-white">At vero eos et accusamus et iusto odio dignissimos 
+                                    ducimus qui blanditiis praesentium</p> -->
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div class="subscribe_btns m-bottom-100">
+
+                                    <form class="form-inline">
+                                        <div class="form-group">
+                                            <input type="text" class="form-control input" id="finderText" placeholder="medicine: DOLO 650 | doctors: nearby">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary search-btn-custom">
+											<i class="fa fa-search"></i>
+										</button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!--End off row -->
+                </div><!--End off container -->
+            </section><!-- End off Impress section-->
 
 
 
             <!--Blog Section-->
-            <section id="blog" class="blog">
+            <section id="blog" class="blog" style="display: none;">
                 <div class="container">
                     <div class="row">
                         <div class="main_blog text-center roomy-100">
@@ -957,7 +989,7 @@
 
 
 			<!--Maps Section-->
-			<section id="maps">
+			<section id="maps" style="display: none;">
 				<div class="main_maps text-center fix">
 					<div class="overlay"></div>
 					<div class="maps_text">
@@ -969,7 +1001,7 @@
 
 
             <!--Contact Us Section-->
-            <section id="contact" class="contact bg-mega fix">
+            <section id="contact" class="contact bg-mega fix" style="display: none;">
                 <div class="container">
                     <div class="row">
                         <div class="main_contact roomy-100 text-white">
@@ -1044,8 +1076,8 @@
                                 Made with 
                                 <i class="fa fa-heart"></i>
                                 by 
-                                <a target="_blank" href="https://bootstrapthemes.co">Bootstrap Themes</a> 
-                                2016. All Rights Reserved
+                                <a target="_blank" href="#">Phoenix</a> 
+                                2020. All Rights Reserved
                             </p>
                         </div>
                     </div>

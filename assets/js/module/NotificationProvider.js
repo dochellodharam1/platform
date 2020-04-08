@@ -36,7 +36,8 @@ define(['jquery', 'lib/ConfigProvider', 'lib/Utility', 'lib/TemplateProvider'], 
 				var date = new Date(Date.parse(article.publishedAt.replace('T', ' ').replace('Z', ' ')))
 				article.timeAgo = Utility.formatByTimeAgo(date);
 				if(!article.urlToImage) {
-					article.urlToImage = 'https://via.placeholder.com/50x50.png?text=' + Utility.extractInitials(article.source.name);
+					var name = article.source ? article.source.name : (article.author ? article.author : 'Hello Doc');
+					article.urlToImage = 'https://via.placeholder.com/50x50.png?text=' + Utility.extractInitials(name);
 				}
 				var notifiation = TemplateProvider.parse(articleTemplate, article);
 				$(container).append(notifiation);

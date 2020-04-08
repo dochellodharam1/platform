@@ -163,12 +163,13 @@ define(['jquery', '../vendor/AllVendors', '../vendor/plugins'], function($, a, p
 		}
 		$('section').hide();
 		$('section' + selected).show();
+		$('.close-side').click();
 		return {
 			previous: prev, 
 			current: selected
 		};
 	};
-	$('.page-menu li a, .side li a').click(function(e) { showOnlySelectedSection($(this).attr('href')); });
+	$('a.navbar-brand, .page-menu li a, .side li a').click(function(e) { showOnlySelectedSection($(this).attr('href')); });
 	showOnlySelectedSection('#hello');
 			
 	console.log('Using custom UI END');

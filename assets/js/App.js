@@ -16,5 +16,6 @@ requirejs([
 	'lib/Theme',
 	'lib/EventTracker',
 	'page/HomePage',
-	'page/HelloDocPage'
+	'page/HelloDocPage',
+	'page/SearchPage'	
 ]);

@@ -6,7 +6,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 	var pageTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div class="map-view"></div>
 		<!-- <div class="loader-view" style="height: 350px; width: 350px; margin: 0 auto;"></div> -->
-		<div class="doctor-avatar" style="width: 350px; margin: 0 auto;"></div>
+		<div class="doctor-avatar" style="width: 350px; height: 350px; margin: 0 auto;"></div>
 		<div class="chat-box"></div>
 	_TEMPLATE_*/});
 	
@@ -122,7 +122,12 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 								case 'group_single':
 									break;
 							}
-							q += '. Say ' + Utility.join(getChoices(item), ' or ');
+							var choicesArr = getChoices(item);
+							if(result.hasAnalysis) {
+								choicesArr.push(config.DIAGNOSTIC_API.showResultCommand);
+							}
+							speechToText.setInstructions(choicesArr);
+							q += '. Say ' + Utility.join(choicesArr, ' or ');
 							
 							preAction({
 								'metadata': { 'request' : req, 'conditions': res.conditions, 'waitingFor': item },
@@ -140,6 +145,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 							console.log(error);
 						});
 				} else {
+					
 					medicalDiagnostic.extractSymptoms(param.userInput, [], 
 						function(result){ 
 							var req = { 
@@ -227,13 +233,12 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				});
 				break;
 			case 'VOICE_REGISTERED_COMMAND': // Handlled in next case VOICE_REGISTERED_COMMAND_PROCESSED
-				
 				var pendingAction = lastContext ? lastContext.action : 'NO_ACTION';
 				var isToPerformLastAction = param.dialogue.action == 'DO_LAST_ACTION';
 				var actionToBeperformed = isToPerformLastAction ? pendingAction : param.dialogue.action;
 				preAction({
 					'metadata': lastContext ? lastContext.metadata : null,
-					'userInput': param.pureIntent,
+					'userInput': param.userSaid,
 					'whenToAct': param.dialogue.whenToAct,
 					'formattedReply': param.formattedReply,
 					'action': actionToBeperformed,
@@ -253,7 +258,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		speechToText = new SpeechToText({
 			continuous: config.SPEECH_TO_TEXT.continuous,
 			autoRestart: config.SPEECH_TO_TEXT.autoRestart,
-			instructionsText: config.SPEECH_TO_TEXT.instructionsText,
+			instructions: config.SPEECH_TO_TEXT.instructions,
 			commands: params,
 			callbacks: {
 				onListenStart: function() { started = true; toggleTalkPage(true);},
@@ -277,6 +282,12 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				},
 				onVoicesChange: dummyFn
 			}
+		});
+		Utility.fitOnWindowResize({
+			staticContainers : ['nav', 'footer'], 
+			itemToFit: '#talk', 
+			includeTopHeightFor: 'nav',
+			includeBottomHeightFor: null
 		});
 	};
 	

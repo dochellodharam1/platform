@@ -1,5 +1,5 @@
-define(['jquery', 'qrCode', 'lib/ConfigProvider', 'lib/DeviceTypeChecker', 'lib/TemplateProvider', 'module/NotificationProvider'], 
-	function ($, QRCode, ConfigProvider, DeviceTypeChecker, TemplateProvider, NotificationProvider) {
+define(['jquery', 'qrCode', 'lib/Utility', 'lib/ConfigProvider', 'lib/DeviceTypeChecker', 'lib/TemplateProvider', 'module/NotificationProvider'], 
+	function ($, QRCode, Utility, ConfigProvider, DeviceTypeChecker, TemplateProvider, NotificationProvider) {
 	var pageTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div class="main_home">
 			<div class="home_text">
@@ -56,7 +56,12 @@ define(['jquery', 'qrCode', 'lib/ConfigProvider', 'lib/DeviceTypeChecker', 'lib/
 			onNotificationClick: dummyFn
 		}
 	});
-	
+	Utility.fitOnWindowResize({
+		staticContainers : ['nav', 'footer'], 
+		itemToFit: '#hello', 
+		includeTopHeightFor: 'nav',
+		includeBottomHeightFor: null
+	});
 	return {};
 	
 });

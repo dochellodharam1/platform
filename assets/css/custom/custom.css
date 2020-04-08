@@ -298,3 +298,17 @@ nav.navbar.bootsnav.navbar-header-custom.white ul.nav > li > a {
 .news-article:hover {
 	background-color: #f2f2f2;
 }
+#avatar-avatar-canvas-div,
+#avatar-avatar-image-div,
+#avatar-avatar-video-div {
+	display: block !important;
+	margin: 0 auto !important;
+}
+.search-btn-custom {
+	font-size: 32px;
+    line-height: 0;
+    padding: 8px 12px;
+}
+.closeable {
+	
+}

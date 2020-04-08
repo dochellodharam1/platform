@@ -1,4 +1,5 @@
-define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
+define(['annyang', 'annyangUI', 'lib/TemplateProvider'], function(annyang, annyangUI, TemplateProvider) {
+	var sayTextTemplate = TemplateProvider.template(function(){/* _TEMPLATE_[ ${text} ] _TEMPLATE_*/});
 	var instance = function(settings) {
 		settings = settings || {callbacks : {} };
 		var dummyFn = function(param) {};
@@ -6,7 +7,7 @@ define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 		var defaults = {
 			continuous: true,
 			autoRestart: true,
-			instructionsText: 'What can I help you with?',
+			instructions: ['Hello doc!'],
 			commands: [
 				// annyang will capture anything after a splat (*) and pass it to the function.
 				// e.g. saying "Show me Batman and Robin" is the same as calling showFlickr('Batman and Robin');
@@ -31,7 +32,7 @@ define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 		
 		var continuous = settings.continuous || defaults.continuous;
 		var autoRestart = settings.autoRestart || defaults.autoRestart;
-		var instructionsText = settings.instructionsText || defaults.instructionsText;
+		var instructions = settings.instructions || defaults.instructions;
 		
 		var commands = settings.commands || defaults.commands;		
 		
@@ -105,15 +106,13 @@ define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 		SpeechKITT.setAbortCommand(function () {
 			onListenEnd();
 			annyang.abort();
-		});
-		
-		SpeechKITT.setInstructionsText(instructionsText);
+		});	
 
+		
 		// Define a stylesheet for KITT to use
 		SpeechKITT.setStylesheet('assets/css/speechkitt.min.css');
 
-		// Render KITT's interface
-		SpeechKITT.vroom();
+
 		
 		var start = function() {
 			annyang.start({
@@ -121,12 +120,25 @@ define(['annyang', 'annyangUI'], function(annyang, annyangUI) {
 				autoRestart: autoRestart
 			});
 		};
+		
+		var setInstructionsFn = function(arr) {
+			var html = 'Say: ';
+			for (var i = 0; i < arr.length; i++) {
+				html += TemplateProvider.parse(sayTextTemplate, {'text': arr[i]});
+			}
+			SpeechKITT.setInstructionsText(html);
+		};
+		setInstructionsFn(instructions);
+		
+		// Render KITT's interface
+		SpeechKITT.vroom();
 		return {
 			addCommands: addCommands,
 			start: start,
 			pause: annyang.pause,
 			resume: annyang.resume,
-			abort: annyang.abort			
+			abort: annyang.abort,
+			setInstructions: setInstructionsFn
 		};
 	};
 	return instance;

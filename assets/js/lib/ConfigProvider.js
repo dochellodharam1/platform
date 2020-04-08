@@ -10,10 +10,10 @@ define(['jquery'], function($) {
 			SPEECH_TO_TEXT: {
 				continuous: true,
 				autoRestart: true,
-				instructionsText: 'Say! Hello Doc'
+				instructions: ['Hello Doc']
 			},
 			TEXT_TO_SPEECH: {
-				bots: [
+				bot: [
 						{
 							avatar: '13974718',
 							gender: 'male',
@@ -46,6 +46,8 @@ define(['jquery'], function($) {
 			},
 			DIAGNOSTIC_API:{
 				url: 'https://api.infermedica.com/v2',
+				minSymtomsToAsk: 5,
+				showResultCommand: 'Show result',
 				credentials: {
 					applicationId: 'b301453a',
 					applicationKey: 'bf2f2efd3ba21591dfd8c2b2dcd8cb53'
