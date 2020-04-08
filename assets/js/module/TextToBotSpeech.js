@@ -64,6 +64,7 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 			web.addMessage(text, "", "", "");
 			web.processMessages();
 			onEnd();
+			track({'w': 'bot', 'i': text});
 		};
 		speak("");
 		

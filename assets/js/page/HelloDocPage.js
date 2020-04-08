@@ -209,7 +209,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		switch(param.source) {
 			case 'RAW_VOICE_INPUT':
 				chatBox.insertChat({who: 'me', text: param.userSaid});
-				
+				track({'w': 'me', 'i': param.userSaid});
 				preAction({
 					'metadata': lastContext ? lastContext.metadata : null,
 					'userInput': param.userSaid,
@@ -221,6 +221,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				});
 				break;
 			case 'RAW_TEXT_INPUT': // Input already in chat box
+				track({'w': 'me', 'i': param.text});
 				
 				preAction({
 					'metadata': lastContext ? lastContext.metadata : null,
@@ -233,6 +234,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				});
 				break;
 			case 'VOICE_REGISTERED_COMMAND': // Handlled in next case VOICE_REGISTERED_COMMAND_PROCESSED
+				track({'w': 'me', 'i': param.userSaid});
 				var pendingAction = lastContext ? lastContext.action : 'NO_ACTION';
 				var isToPerformLastAction = param.dialogue.action == 'DO_LAST_ACTION';
 				var actionToBeperformed = isToPerformLastAction ? pendingAction : param.dialogue.action;
