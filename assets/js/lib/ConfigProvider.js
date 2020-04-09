@@ -58,7 +58,7 @@ define(['jquery'], function($) {
 			},
 			HEARTBEAT: {
 				url: 'https://phoenix-event-tracker.herokuapp.com/heart-beat',
-				intervalMS: 3000
+				intervalMS: 15000
 			}
 		};
 	};
