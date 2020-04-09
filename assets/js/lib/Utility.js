@@ -48,9 +48,14 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 			obj.toString = (function(o) {
 				return function() {
 					var str = '{';
+					var first = true;
 					for(var p in o) {
 						var v = o[p];
-						str += '"' + p + '": "' + v + '"';
+						var separator = first ? '' : ',';
+						if(typeof v == 'string') {
+							str += separator + '"' + p + '": "' + v + '"';
+							first = false;
+						}
 					}
 					str += '}';
 					return str;
