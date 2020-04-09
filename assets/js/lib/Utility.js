@@ -55,7 +55,7 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 					str += '}';
 					return str;
 				};
-			})(o);
+			})(obj);
 		}
 	};
 	
