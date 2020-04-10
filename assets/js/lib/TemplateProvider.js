@@ -9,9 +9,9 @@ define(['jquery'], function(jq) {
 				for(var i = 0; i < depth.length; i++) {
 					obj = obj[depth[i]];
 				}
-				return obj ? obj : value;
+				return obj ? obj : '';
 			}
-			return data[inner] ? data[inner] : value;
+			return data[inner] ? data[inner] : '';
 		});
 	};
 	

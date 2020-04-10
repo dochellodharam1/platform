@@ -125,7 +125,7 @@
 	font-size:50px;
 	line-height:1.2em;
 }
-.ld_fancy_heading .ld-fh-txt{
+.ld_fancy_heading .ld-fh-txt, .fancy-txt{
 	background:-webkit-linear-gradient(131deg, #ff6348 0.9554140127388535%, #4f50ff 99.36305732484077%);
 	background:linear-gradient(131deg, #ff6348 0.9554140127388535%, #4f50ff 99.36305732484077%);
 	-webkit-background-clip: text!important;
@@ -309,6 +309,23 @@ nav.navbar.bootsnav.navbar-header-custom.white ul.nav > li > a {
     line-height: 0;
     padding: 8px 12px;
 }
-.closeable {
-	
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }

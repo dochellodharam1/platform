@@ -1,13 +1,14 @@
 define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHelper', 'lib/MedicalDiagnostic', 'lib/ConversationContextHolder',
-		'module/SpeechToText', 'module/TextToBotSpeech', 'module/ChatBox', 'module/MapSearch', 'module/ToggleableLoader'], 
+		'module/SpeechToText', 'module/TextToBotSpeech', 'module/ChatBox', 'module/MapSearch', 'module/ToggleableLoader', 'module/PlacesView'], 
 	function ($, Utility, ConfigProvider, TemplateProvider, DialougeHelper, MedicalDiagnostic, ConversationContextHolder,
-		SpeechToText, TextToBotSpeech, ChatBox, MapSearch, ToggleableLoader) {
+		SpeechToText, TextToBotSpeech, ChatBox, MapSearch, ToggleableLoader, PlacesView) {
 			
 	var pageTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
-		<div class="map-view"></div>
-		<!-- <div class="loader-view" style="height: 350px; width: 350px; margin: 0 auto;"></div> -->
-		<div class="doctor-avatar" style="width: 350px; height: 350px; margin: 0 auto;"></div>
-		<div class="chat-box"></div>
+		<div class="page-view map-view"></div>
+		<!-- <div class="page-view loader-view" style="height: 350px; width: 350px; margin: 0 auto;"></div> -->
+		<div class="page-view doctor-avatar" style="width: 350px; height: 350px; margin: 0 auto;"></div>
+		<div class="page-view chat-box"></div>
+		<div class="page-view places-view" style="width: 320px; height: 350px; margin: 0 auto; display: none"></div>
 	_TEMPLATE_*/});
 	
 	$("#talk .row").append(pageTemplate);
@@ -20,6 +21,21 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 	var speechToText = null;
 	var textToSpeech = null;
 	var mapSearch = null;
+	var resizeBot = function() {
+		var bot = $('.doctor-avatar')
+		bot.css('height', '100px');
+		bot.css('width', '100px');
+		bot.css('margin', '-70px 0 -30px calc(50% + 62px)');
+		$('.places-view').css('margin', '50px auto -50px');
+		textToSpeech.resize(100);
+	};
+	var placesView = new PlacesView({ 
+		container: '.places-view',
+		containersToHide: '.acc',
+		callbacks: {
+			onShowResult: resizeBot
+		}
+	});
 	var medicalDiagnostic = new MedicalDiagnostic();
 	var toggleableLoader = new ToggleableLoader({
 		container: '.loader-view',
@@ -60,15 +76,16 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		var onModuleResult = function(displayEvent, result) {
 			var count = result.count;
 			var replyAfterAction = param.replyAfterAction;
+			var reply = null;
 			if(replyAfterAction) {
 				var arrgs = [...keywords, count];
-				var reply = dialougeHelper.prepareReply(replyAfterAction, arrgs);
-				postAction({
-					'displayEvent' : displayEvent,
-					'reply': reply,
-					'items': result.items
-				});
+				reply = dialougeHelper.prepareReply(replyAfterAction, arrgs);
 			}
+			postAction({
+				'displayEvent' : displayEvent,
+				'reply': reply,
+				'items': result.items
+			});
 		};
 		
 		var keywords = param.keywords;
@@ -182,9 +199,12 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				}
 				break;
 			case 'REPEAT_PREVIOUS_REPLY':
-				
+				textToSpeech.repeat();
 				break;
 			case 'DO_LAST_ACTION':
+				
+				break;
+			case 'COMPLETE_LAST_ACTION':
 				
 				break;
 			default:
@@ -195,7 +215,10 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 	var postAction = function(param) {
 		switch(param.displayEvent) {
 			case 'SHOW_MAP_DATA':
-				
+				placesView.show({
+					'text': param.reply,
+					'items': param.items
+				});
 				break;
 			case 'SHOW_SYMPTOMS_DATA':
 				
@@ -313,14 +336,15 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		}
 	});
 	
-	var memory = {}; 
 	var toggleTalkPage =  function(bool) {
-		toggleableLoader.toggleInner(!bool);
-		toggleableLoader.toggleOuter(bool);
+		//toggleableLoader.toggleInner(!bool);
+		//toggleableLoader.toggleOuter(bool);
 		showOnlySelectedSection('#talk');
 	};
 	
 	chatBox.clearChat();
+	
+
 
 	return {};
 	

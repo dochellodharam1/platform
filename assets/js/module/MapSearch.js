@@ -116,12 +116,32 @@ define(['jquery', 'lib/TemplateProvider'], function($, TemplateProvider) {
 		
 		var onResult = function (result, onSearchComplete) {
 			var places = result.results.items;
-			addPlacesToMap(places);
-			addPlacesToPanel(places);
-			onSearchComplete({
-				count: places.length,
-				items: places
-			});
+			var afterFetch = function() {
+				addPlacesToMap(places);
+				addPlacesToPanel(places);
+				onSearchComplete({
+					count: places.length,
+					items: places
+				});
+			};
+			var total = places.length;
+			var finilazed = 0;
+			for(var i=0; i < places.length; i++) {
+				var item = places[i];
+				(function(it){
+					if(it.href) {
+						$.ajax(it.href)
+						.done(function(data){ it.detailed = data; })
+						.fail(function(e) { })
+						.always(function(){
+							finilazed++;
+							if(finilazed == total) {
+								afterFetch();
+							}
+						});
+					}
+				})(item);
+			}
 		};
 		
 		var populatePlaces = function(query, onSearchComplete, onError) {

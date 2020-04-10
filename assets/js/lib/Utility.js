@@ -110,8 +110,9 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 	
 	var fitOnWindowResizeFn = function(obj) {
 		var includedHeight = function(h, item) {return h + (item ? $(item).height() : 0);};
-		(function(sc, it, iTop, iBottom, ar) {
+		(function(sc, it, iTop, iBottom, ar, prop) {
 			ar = ar ? ar : 0.5;
+			prop = prop ? prop : 'padding';
 			onWindowResizeFn(function(size) {
 				var staticSize = 0;
 				for(var i = 0; i < sc.length; i++) {
@@ -123,11 +124,22 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 					var extraHeight = expandableHeight - itemHeight;
 					var paddingTop = includedHeight(extraHeight * ar, iTop);
 					var paddingBottom = includedHeight(extraHeight  * (1 - ar), iBottom);
-					$(it).css('padding-top', paddingTop + 'px');
-					$(it).css('padding-bottom', paddingBottom + 'px');
+					$(it).css(prop + '-top', paddingTop + 'px');
+					$(it).css(prop + '-bottom', paddingBottom + 'px');
 				}
 			});
-		})(obj.staticContainers, obj.itemToFit, obj.includeTopHeightFor, obj.includeBottomHeightFor, obj.topToBottomRatio);
+		})(obj.staticContainers, obj.itemToFit, obj.includeTopHeightFor, obj.includeBottomHeightFor, obj.topToBottomRatio, obj.useProp);
+	};
+	
+	var removeInvalidFn = function(arr, fn){
+		var newArr = [];
+		for(var i = 0; i < arr.length; i++) {
+			var it = arr[i];
+			if(fn(it)) {
+				newArr.push(it);
+			}
+		}
+		return newArr;
 	};
 	
 	return {
@@ -142,6 +154,7 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 		join: joinFn,
 		findBestMatchedString: findBestMatchedStringFn ,
 		onWindowResize: onWindowResizeFn,
-		fitOnWindowResize: fitOnWindowResizeFn
+		fitOnWindowResize: fitOnWindowResizeFn,
+		removeInvalid: removeInvalidFn
 	};
 });

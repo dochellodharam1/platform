@@ -21,7 +21,6 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 		var container = settings.container || defaults.container;
 		var applicationId = settings.applicationId || defaults.applicationId;
 		var bot = settings.bot || defaults.bot;
-		var widthInPx = $(container).width();
 		
 		// Callbacks
 		var onStart = settings.callbacks.onStart || defaults.callbacks.onStart;
@@ -43,36 +42,52 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 		// Responsive voice support
 		web.nativeVoice = true;
 		web.nativeVoiceName = bot.nativeVoiceName;
-
+		
+		var widthInPx = $(container).width();
 		web.width = widthInPx;
 		web.createBox();
 		
-		$(document).ready(function(){
+		var removeOverlay = function() {
 			var avatarBox = $("#avatar-avatarbox");
 			avatarBox.find(".avatar-avatarboxmenu").remove();
 			var avatarBoxDiv = avatarBox.parent();
 			$(container).append(avatarBox);
 			avatarBoxDiv.remove();
-			/*
-			$( "#avatar-avatar-video" ).on('loadstart', function() {
-			  console.log( $(this).attr("src") );
-			});*/
-		});
+		};
 		
+		var lastSentence = null;
 		var speak = function(text) {
+			lastSentence = text;
 			onStart();
 			web.addMessage(text, "", "", "");
 			web.processMessages();
 			onEnd();
 			track({'w': 'bot', 'i': text});
 		};
+		
+		var repeat = function() {
+			if(lastSentence) {
+				speak(lastSentence);
+			}
+		};
+		
+		var resize = function(size) {
+			$('#avatar-avatar-image-div, #avatar-avatar, #avatar-avatar-video-div, #avatar-avatar-video, #avatar-avatar-canvas-div, #avatar-avatar-canvas')
+			.css('width', size + 'px');
+			$('#avatar-avatar-canvas').attr('width', size);
+			$('#avatar-avatar-canvas').attr('height', size);
+		};
+
 		speak("");
+		$(document).ready(removeOverlay);
 		
 		return {
 			getAvailableVoices: function() {},
 			getCurrentVoice: bot.nativeVoiceName,
 			setVoice: function(voice) {  },
+			resize: resize, 
 			start: speak,
+			repeat: repeat,
 			pause: function() { },
 			resume: function() {  },
 			stop: function() { }
