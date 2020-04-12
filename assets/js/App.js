@@ -17,5 +17,6 @@ requirejs([
 	'lib/EventTracker',
 	'page/HomePage',
 	'page/HelloDocPage',
-	'page/SearchPage'	
+	'page/SearchPage',
+	'page/Covid19Page'
 ]);
