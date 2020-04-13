@@ -47,7 +47,7 @@ define(['jquery'], function($) {
 			DIAGNOSTIC_API:{
 				url: 'https://api.infermedica.com/v2',
 				minSymtomsToAsk: 5,
-				showResultCommand: 'Show result',
+				showResultCommand: 'Show results',
 				credentials: {
 					applicationId: 'b301453a',
 					applicationKey: 'bf2f2efd3ba21591dfd8c2b2dcd8cb53'

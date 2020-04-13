@@ -142,6 +142,43 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 		return newArr;
 	};
 	
+	var probablityToPercentageFn = function(prob, fixed){
+		return (prob * 100).toFixed(fixed);
+	};
+	
+	var percentageToProbablityFn = function(perc, fixed) {
+		return (perc * 0.01).toFixed(fixed);
+	};
+	
+	var sortFn = function(arr, fn) {
+		if(arr.length == 0 || arr.length == 1) {
+			return arr;
+		}
+		var newArr = [arr[0]];
+		for(var i = 1; i < arr.length; i++) {
+			var it = arr[i];
+			var index = newArr.length;
+			for(var j = 0; j < newArr.length; j++) {
+				var comparedResult = fn(newArr[j], it);
+				if(comparedResult < 0 ){
+					index = j;
+					break;
+				} else if(comparedResult == 0 ){
+					index = j;
+					break;
+				} else {
+					continue;
+				}
+			}
+			newArr.splice(index, 0, it);
+		}
+		return newArr;
+	};
+	
+	var compareStrFn = function(str1, str2){
+		return str1.localeCompare(str2);
+	}
+	
 	return {
 		generateGuid: generateGuid,
 		hashCode: hashCode,
@@ -155,6 +192,10 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 		findBestMatchedString: findBestMatchedStringFn ,
 		onWindowResize: onWindowResizeFn,
 		fitOnWindowResize: fitOnWindowResizeFn,
-		removeInvalid: removeInvalidFn
+		removeInvalid: removeInvalidFn,
+		probablityToPercentage: probablityToPercentageFn,
+		percentageToProbablity: percentageToProbablityFn,
+		sort: sortFn,
+		compareStr: compareStrFn
 	};
 });

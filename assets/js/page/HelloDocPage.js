@@ -1,7 +1,7 @@
 define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', 'lib/DialougeHelper', 'lib/MedicalDiagnostic', 'lib/ConversationContextHolder',
-		'module/SpeechToText', 'module/TextToBotSpeech', 'module/ChatBox', 'module/MapSearch', 'module/ToggleableLoader', 'module/PlacesView'], 
+		'module/SpeechToText', 'module/TextToBotSpeech', 'module/ChatBox', 'module/MapSearch', 'module/ToggleableLoader', 'module/PlacesView', 'module/ConditionsView'], 
 	function ($, Utility, ConfigProvider, TemplateProvider, DialougeHelper, MedicalDiagnostic, ConversationContextHolder,
-		SpeechToText, TextToBotSpeech, ChatBox, MapSearch, ToggleableLoader, PlacesView) {
+		SpeechToText, TextToBotSpeech, ChatBox, MapSearch, ToggleableLoader, PlacesView, ConditionsView) {
 			
 	var pageTemplate = TemplateProvider.template(function() {/*_TEMPLATE_
 		<div class="page-view map-view"></div>
@@ -9,6 +9,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		<div class="page-view doctor-avatar" style="width: 350px; height: 350px; margin: 0 auto;"></div>
 		<div class="page-view chat-box"></div>
 		<div class="page-view places-view" style="width: 320px; height: 350px; margin: 0 auto; display: none"></div>
+		<div class="page-view conditions-view" style="width: 320px; height: 350px; margin: 0 auto; display: none"></div>
 	_TEMPLATE_*/});
 	
 	$("#talk .row").append(pageTemplate);
@@ -25,12 +26,19 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		var bot = $('.doctor-avatar')
 		bot.css('height', '100px');
 		bot.css('width', '100px');
-		bot.css('margin', '-70px 0 -30px calc(50% + 62px)');
+		bot.css('margin', '-70px 0 20px calc(50% + 62px)');
 		$('.places-view').css('margin', '50px auto -50px');
 		textToSpeech.resize(100);
 	};
 	var placesView = new PlacesView({ 
 		container: '.places-view',
+		containersToHide: '.acc',
+		callbacks: {
+			onShowResult: resizeBot
+		}
+	});
+	var conditionsView = new ConditionsView({ 
+		container: '.conditions-view',
 		containersToHide: '.acc',
 		callbacks: {
 			onShowResult: resizeBot
@@ -155,8 +163,6 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 								'keywords': [],
 								'replyAfterAction': null
 							});
-							
-							onModuleResult('SHOW_SYMPTOMS_DATA', result); 
 						},
 						function(error){
 							console.log(error);
@@ -205,7 +211,12 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				
 				break;
 			case 'COMPLETE_LAST_ACTION':
-				
+				var completeCommandForMed = Utility.findBestMatchedString(param.userInput, getChoices([config.DIAGNOSTIC_API.showResultCommand]));
+				if(completeCommandForMed == config.DIAGNOSTIC_API.showResultCommand) {
+					if(param.metadata && param.metadata.conditions) {
+						onModuleResult('SHOW_SYMPTOMS_DATA', param.metadata.conditions);
+					}
+				}	
 				break;
 			default:
 			
@@ -221,7 +232,10 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				});
 				break;
 			case 'SHOW_SYMPTOMS_DATA':
-				
+				conditionsView.show({
+					'text': param.reply,
+					'items': param.items
+				});
 				break;
 		}
 		textToSpeech.start(param.reply);
