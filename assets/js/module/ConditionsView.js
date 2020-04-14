@@ -31,7 +31,7 @@ define(['jquery', 'lib/TemplateProvider', 'lib/Utility'], function($, TemplatePr
 			.conditions .alert {
 				font-family: monospace;    
 				line-height: 0;
-				width: 145px;
+				width: 170px;
 			}
 		</style>
 		<div class="conditions">
