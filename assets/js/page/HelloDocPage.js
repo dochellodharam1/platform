@@ -214,7 +214,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				var completeCommandForMed = Utility.findBestMatchedString(param.userInput, getChoices([config.DIAGNOSTIC_API.showResultCommand]));
 				if(completeCommandForMed == config.DIAGNOSTIC_API.showResultCommand) {
 					if(param.metadata && param.metadata.conditions) {
-						onModuleResult('SHOW_SYMPTOMS_DATA', param.metadata.conditions);
+						onModuleResult('SHOW_SYMPTOMS_DATA', { items: param.metadata.conditions, count: param.metadata.conditions.length});
 					}
 				}	
 				break;
