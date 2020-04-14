@@ -221,10 +221,12 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				maximizeBot();
 				break;
 			case 'COMPLETE_LAST_ACTION':
-				var completeCommandForMed = Utility.findBestMatchedString(param.userInput, getChoices([config.DIAGNOSTIC_API.showResultCommand]));
+				var completeCommandForMed = Utility.findBestMatchedString(param.userInput, [config.DIAGNOSTIC_API.showResultCommand]);
 				if(completeCommandForMed == config.DIAGNOSTIC_API.showResultCommand) {
-					if(param.metadata && param.metadata.conditions) {
-						onModuleResult('SHOW_SYMPTOMS_DATA', { items: param.metadata.conditions, count: param.metadata.conditions.length});
+					var m = param.metadata;
+					if(m && m.conditions) {
+						var c = m.conditions;
+						onModuleResult('SHOW_SYMPTOMS_DATA', { items: c, count: c.length});
 					}
 				}	
 				break;
