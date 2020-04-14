@@ -239,6 +239,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				break;
 		}
 		textToSpeech.start(param.reply);
+		contextHolder.clear();
 	};
 	
 	var onUserInput = function(param) {
