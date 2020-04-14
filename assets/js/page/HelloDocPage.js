@@ -22,7 +22,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 	var speechToText = null;
 	var textToSpeech = null;
 	var mapSearch = null;
-	var resizeBot = function() {
+	var minimizeBot = function() {
 		var bot = $('.doctor-avatar')
 		bot.css('height', '100px');
 		bot.css('width', '100px');
@@ -30,18 +30,25 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		$('.places-view').css('margin', '50px auto -50px');
 		textToSpeech.resize(100);
 	};
+	var maximizeBot = function() {
+		var bot = $('.doctor-avatar')
+		bot.css('height', '350px');
+		bot.css('width', '350px');
+		$('.places-view, .conditions-view').hide();
+		textToSpeech.resize(100);
+	};
 	var placesView = new PlacesView({ 
 		container: '.places-view',
 		containersToHide: '.acc',
 		callbacks: {
-			onShowResult: resizeBot
+			onShowResult: minimizeBot
 		}
 	});
 	var conditionsView = new ConditionsView({ 
 		container: '.conditions-view',
 		containersToHide: '.acc',
 		callbacks: {
-			onShowResult: resizeBot
+			onShowResult: minimizeBot
 		}
 	});
 	var medicalDiagnostic = new MedicalDiagnostic();
@@ -209,6 +216,9 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 				break;
 			case 'DO_LAST_ACTION':
 				
+				break;
+			case 'SHOW_BOT':
+				maximizeBot();
 				break;
 			case 'COMPLETE_LAST_ACTION':
 				var completeCommandForMed = Utility.findBestMatchedString(param.userInput, getChoices([config.DIAGNOSTIC_API.showResultCommand]));
