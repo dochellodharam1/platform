@@ -91,7 +91,6 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 	};
 	
 	var findBestMatchedStringFn = function(str, arr) {
-		debugger;
 		var res = textSimilarity.findBestMatch(str, arr);
 		return res.bestMatch.target;
 	};
