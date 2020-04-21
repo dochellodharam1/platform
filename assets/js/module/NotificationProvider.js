@@ -33,8 +33,8 @@ define(['jquery', 'lib/ConfigProvider', 'lib/Utility', 'lib/TemplateProvider'], 
 			$('.noti-counter').text(data.content.length);
 			for(var i in data.content) {
 				var article = data.content[i];
-				var date = new Date(Date.parse(article.publishedAt.replace('T', ' ').replace('Z', ' ')))
-				article.timeAgo = Utility.formatByTimeAgo(date);
+				var date = article.publishedAt ? new Date(Date.parse(article.publishedAt.replace('T', ' ').replace('Z', ' '))) : null;
+				article.timeAgo = date ? Utility.formatByTimeAgo(date) : '';
 				if(!article.urlToImage) {
 					var name = article.source ? article.source.name : (article.author ? article.author : 'Hello Doc');
 					article.urlToImage = 'https://via.placeholder.com/50x50.png?text=' + Utility.extractInitials(name);
