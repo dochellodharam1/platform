@@ -88,6 +88,7 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 			resize: resize, 
 			start: speak,
 			repeat: repeat,
+			getLastSentence: function() { return lastSentence;},
 			pause: function() { },
 			resume: function() {  },
 			stop: function() { }

@@ -188,6 +188,7 @@ define(['jquery', 'timeAgo', 'textSimilarity'], function($, timeAgo, textSimilar
 		collect: collectFn,
 		findFirst: findFirstFn,
 		join: joinFn,
+		findBestMatch: textSimilarity.findBestMatch,
 		findBestMatchedString: findBestMatchedStringFn ,
 		onWindowResize: onWindowResizeFn,
 		fitOnWindowResize: fitOnWindowResizeFn,

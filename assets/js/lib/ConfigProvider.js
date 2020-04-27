@@ -10,6 +10,7 @@ define(['jquery'], function($) {
 			SPEECH_TO_TEXT: {
 				continuous: true,
 				autoRestart: true,
+				cancelSpeakerVoiceWhenMatchPer: 25, 
 				instructions: ['Hello Doc']
 			},
 			TEXT_TO_SPEECH: {

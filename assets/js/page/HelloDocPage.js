@@ -22,6 +22,17 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 	var speechToText = null;
 	var textToSpeech = null;
 	var mapSearch = null;
+	var ignoreRecognition = function(recognizedText) {
+		var lastBotSaid = textToSpeech.getLastSentence();
+		if(lastBotSaid && recognizedText) {
+			var res = Utility.findBestMatch(recognizedText, [lastBotSaid]);
+			if(res && res.bestMatch) {
+				var perc = Utility.probablityToPercentage(res.bestMatch.rating, 2);
+				return parseInt(perc) > config.SPEECH_TO_TEXT.cancelSpeakerVoiceWhenMatchPer;
+			}
+		}
+		return false;
+	};
 	var minimizeBot = function() {
 		var bot = $('.doctor-avatar')
 		bot.css('height', '100px');
@@ -258,6 +269,7 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 		var lastContext = contextHolder.lastContext();
 		switch(param.source) {
 			case 'RAW_VOICE_INPUT':
+				if(ignoreRecognition(param.userSaid)) return;
 				chatBox.insertChat({who: 'me', text: param.userSaid});
 				track({'w': 'me', 'i': param.userSaid});
 				preAction({
