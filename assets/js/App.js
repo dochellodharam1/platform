@@ -8,11 +8,13 @@ requirejs.config({
 		annyangUI: 'vendor/speechkitt.min',
 		botlibreSdk: 'vendor/botlibre_sdk',
 		timeAgo: 'vendor/timeago.full.min',
-		textSimilarity: 'vendor/string-similarity.min'
+		textSimilarity: 'vendor/string-similarity.min',
+		jqueryUi: 'vendor/jquery-ui.min'
     }
 });
 requirejs([
-	'jquery', 
+	'jquery',
+	'jqueryUi',
 	'lib/Theme',
 	'lib/EventTracker',
 	'page/HomePage',
