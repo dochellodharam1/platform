@@ -247,6 +247,8 @@ define(['jquery', 'lib/Utility', 'lib/ConfigProvider', 'lib/TemplateProvider', '
 	};
 		
 	var postAction = function(param) {
+		placesView.hide();
+		conditionsView.hide();
 		switch(param.displayEvent) {
 			case 'SHOW_MAP_DATA':
 				placesView.show({

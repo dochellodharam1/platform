@@ -2,6 +2,25 @@ define(['jquery'], function($) {
 	
 	var instance = function() {
 		return {
+			SEARCH_DATA: {
+				doctors: [
+					'Doctor', 'Allergist', 'Anesthesiologist', 'Cardiologist', 'Colon and Rectal Surgeons',
+					'Critical Care Medicine Specialists', 'Dermatologist', 'Emergency Medicine Specialists',
+					'Emergency Physician', 'Endocrinologist', 'Family Physicians', 'Gastroenterologist',
+					'General Practitioner', 'General Surgeons', 'Geriatric Medicine Specialists',
+					'Hematologists', 'Hospice and Palliative Medicine Specialists', 'Immunologist',
+					'Infectious Disease Specialists', 'Internists', 'Medical Geneticists',
+					'Nephrologist', 'Neurologist', 'Obstetrician', 'Gynecologist', 'Oncologist', 
+					'Ophthalmologist', 'Orthopedist', 'Osteopaths', 'Otolaryngologist', 'Pathologist',
+					'Pediatrician', 'Physiatrist', 'Plastic Surgeon', 'Podiatrist', 
+					'Preventive Medicine Specialist', 'Psychiatrist', 'Pulmonologist', 'Radiologist',
+					'Rheumatologist', 'Sleep Medicine Specialist', 'Sports Medicine Specialist',
+					'Surgeon', 'Urologist'
+				],
+				places: [
+					'Medicine store', 'Drug store'
+				]
+			},
 			MAP: {
 				credentials: {
 					apiKey: 'pA97nRDfxh7nTK0Tt6niCcmv-kM1xtt550Wrui55cB4'
@@ -27,7 +46,7 @@ define(['jquery'], function($) {
 							speechRate: 0.9,
 							nativeVoiceName: 'Google UK English Female'
 						}
-				][0],
+				][1],
 				credentials: {
 					applicationId: '6291889508634688769'
 				}
@@ -40,7 +59,7 @@ define(['jquery'], function($) {
 				url: 'https://phoenix-conversation-api.herokuapp.com/data'
 			},
 			MEDICINE_API: {
-				url: '',
+				url: 'https://phoenix-notification-api.herokuapp.com/medical-drugs',
 				credentials: {
 					applicationId: ''
 				}

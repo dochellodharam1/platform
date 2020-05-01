@@ -118,6 +118,7 @@ define(['jquery', 'lib/TemplateProvider', 'lib/Utility'], function($, TemplatePr
 		$(container).append(moduleTemplate);
 		
 		var addPlaces = function(obj) {
+			$('.places .list-group').empty();
 			var items = obj.items;
 			var text = obj.text;
 			for(var i = 0; i < items.length; i++) {

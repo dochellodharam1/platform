@@ -38,6 +38,7 @@ define(['jquery', 'botlibreSdk', 'lib/Utility'], function($, botlibreSdk, Utilit
 		web.avatar = bot.avatar;
 		web.voice = 'cmu-slt';
 		web.voiceMod = 'default';
+		//web.background = 'transparent'; 
 		
 		// Responsive voice support
 		web.nativeVoice = true;

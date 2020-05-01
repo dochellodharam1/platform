@@ -20,5 +20,6 @@ requirejs([
 	'page/HomePage',
 	'page/HelloDocPage',
 	'page/SearchPage',
+	'page/SearchPlacePage',
 	'page/Covid19Page'
 ]);
